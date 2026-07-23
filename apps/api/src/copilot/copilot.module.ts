@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { AIPlatformModule } from '../ai-platform/ai-platform.module'; import { KnowledgePlatformModule } from '../knowledge-platform/knowledge-platform.module'; import { CopilotController } from './copilot.controller'; import { CopilotService } from './copilot.service';
+@Module({imports:[AIPlatformModule,KnowledgePlatformModule],controllers:[CopilotController],providers:[CopilotService]}) export class CopilotModule {}

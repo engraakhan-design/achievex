@@ -1,0 +1,2 @@
+import { calculateAllocatedHours, calculateUtilization, isOverallocated } from './resource-capacity';
+describe('resource capacity',()=>{it('calculates allocation hours and utilization',()=>{const a=[{allocationPercent:50},{allocationPercent:25}];expect(calculateAllocatedHours(40,a)).toBe(30);expect(calculateUtilization(40,a)).toBe(75)});it('detects overallocation',()=>expect(isOverallocated(40,[{allocationPercent:120}])).toBe(true));});

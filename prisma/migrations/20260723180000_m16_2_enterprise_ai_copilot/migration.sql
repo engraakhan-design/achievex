@@ -1,0 +1,17 @@
+CREATE TYPE "CopilotConversationStatus" AS ENUM ('ACTIVE','ARCHIVED','CLOSED');
+CREATE TYPE "CopilotMessageRole" AS ENUM ('USER','ASSISTANT','SYSTEM');
+CREATE TYPE "CopilotFeedbackRating" AS ENUM ('HELPFUL','NOT_HELPFUL');
+CREATE TYPE "CopilotActionStatus" AS ENUM ('SUGGESTED','APPROVED','REJECTED','EXECUTED','FAILED');
+CREATE TABLE "CopilotConversation" ("id" TEXT NOT NULL,"organizationId" TEXT NOT NULL,"userId" TEXT NOT NULL,"title" TEXT,"domain" TEXT NOT NULL,"status" "CopilotConversationStatus" NOT NULL DEFAULT 'ACTIVE',"context" JSONB NOT NULL DEFAULT '{}',"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "CopilotConversation_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "CopilotMessage" ("id" TEXT NOT NULL,"organizationId" TEXT NOT NULL,"conversationId" TEXT NOT NULL,"role" "CopilotMessageRole" NOT NULL,"content" TEXT NOT NULL,"citations" JSONB,"correlationId" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "CopilotMessage_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "CopilotFeedback" ("id" TEXT NOT NULL,"organizationId" TEXT NOT NULL,"messageId" TEXT NOT NULL,"userId" TEXT NOT NULL,"rating" "CopilotFeedbackRating" NOT NULL,"comment" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "CopilotFeedback_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "CopilotSuggestedAction" ("id" TEXT NOT NULL,"organizationId" TEXT NOT NULL,"conversationId" TEXT NOT NULL,"type" TEXT NOT NULL,"title" TEXT NOT NULL,"description" TEXT,"payload" JSONB NOT NULL,"status" "CopilotActionStatus" NOT NULL DEFAULT 'SUGGESTED',"requestedByUserId" TEXT NOT NULL,"approvedByUserId" TEXT,"approvedAt" TIMESTAMP(3),"executedAt" TIMESTAMP(3),"executionResult" JSONB,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "CopilotSuggestedAction_pkey" PRIMARY KEY ("id"));
+CREATE UNIQUE INDEX "CopilotFeedback_messageId_key" ON "CopilotFeedback"("messageId");
+CREATE INDEX "CopilotConversation_organizationId_userId_status_updatedAt_idx" ON "CopilotConversation"("organizationId","userId","status","updatedAt");
+CREATE INDEX "CopilotMessage_organizationId_conversationId_createdAt_idx" ON "CopilotMessage"("organizationId","conversationId","createdAt");
+CREATE INDEX "CopilotMessage_correlationId_idx" ON "CopilotMessage"("correlationId");
+CREATE INDEX "CopilotFeedback_organizationId_userId_createdAt_idx" ON "CopilotFeedback"("organizationId","userId","createdAt");
+CREATE INDEX "CopilotSuggestedAction_organizationId_status_createdAt_idx" ON "CopilotSuggestedAction"("organizationId","status","createdAt");
+ALTER TABLE "CopilotMessage" ADD CONSTRAINT "CopilotMessage_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "CopilotConversation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "CopilotFeedback" ADD CONSTRAINT "CopilotFeedback_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES "CopilotMessage"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "CopilotSuggestedAction" ADD CONSTRAINT "CopilotSuggestedAction_conversationId_fkey" FOREIGN KEY ("conversationId") REFERENCES "CopilotConversation"("id") ON DELETE CASCADE ON UPDATE CASCADE;

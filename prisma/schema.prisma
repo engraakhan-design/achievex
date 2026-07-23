@@ -1,0 +1,5578 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+enum OrganizationStatus {
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+enum TokenType {
+  REFRESH
+  INVITATION
+  PASSWORD_RESET
+}
+enum TeamMemberRole {
+  LEAD
+  MEMBER
+}
+enum OkrCycleStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+enum OkrScope {
+  COMPANY
+  DEPARTMENT
+  TEAM
+  INDIVIDUAL
+}
+enum ObjectiveStatus {
+  DRAFT
+  ACTIVE
+  AT_RISK
+  OFF_TRACK
+  COMPLETED
+  CANCELLED
+}
+enum KeyResultType {
+  NUMBER
+  PERCENTAGE
+  CURRENCY
+  BOOLEAN
+  MILESTONE
+}
+enum KeyResultStatus {
+  NOT_STARTED
+  ON_TRACK
+  AT_RISK
+  OFF_TRACK
+  COMPLETED
+}
+enum ConfidenceLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+enum InitiativeStatus {
+  PLANNED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  CANCELLED
+}
+enum DomainEventStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ACTION_REQUIRED
+}
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SLACK
+  TEAMS
+}
+enum NotificationDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+  SKIPPED
+}
+
+enum SlaPolicyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+enum SlaTargetType {
+  RESPONSE
+  COMPLETION
+}
+enum SlaClockStatus {
+  RUNNING
+  PAUSED
+  MET
+  BREACHED
+  CANCELLED
+}
+enum SlaEscalationStatus {
+  PENDING
+  TRIGGERED
+  CANCELLED
+}
+
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+}
+enum WebhookStatus {
+  ACTIVE
+  PAUSED
+  DISABLED
+}
+enum LegacyWebhookDeliveryStatus {
+  PENDING
+  DELIVERED
+  FAILED
+  DEAD_LETTER
+}
+enum IdentityProviderType {
+  OIDC
+  SAML
+}
+enum IdentityProviderStatus {
+  DRAFT
+  ACTIVE
+  DISABLED
+}
+enum DirectoryProviderType {
+  MICROSOFT_ENTRA
+  OKTA
+  GOOGLE_WORKSPACE
+  GENERIC_SCIM
+}
+enum DirectoryConnectionStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+  DISABLED
+}
+enum DirectorySyncMode {
+  MANUAL
+  SCHEDULED
+  WEBHOOK
+}
+enum DirectorySyncStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  PARTIAL
+  FAILED
+  CANCELLED
+}
+enum ProvisioningAction {
+  CREATE
+  UPDATE
+  ACTIVATE
+  SUSPEND
+  DEPROVISION
+  GROUP_ASSIGN
+  GROUP_REMOVE
+}
+enum ProvisioningEventStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  SKIPPED
+}
+enum DomainVerificationStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+enum FeatureFlagValueType {
+  BOOLEAN
+  STRING
+  NUMBER
+  JSON
+}
+enum SessionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+enum SecretStatus {
+  ACTIVE
+  ROTATED
+  REVOKED
+}
+enum AiGenerationStatus {
+  COMPLETED
+  FAILED
+  BLOCKED
+}
+enum ExecutionStatus {
+  DRAFT
+  PLANNED
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+enum ExecutionHealth {
+  NOT_SET
+  ON_TRACK
+  AT_RISK
+  OFF_TRACK
+}
+enum ExecutionPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum WorkItemStatus {
+  TODO
+  IN_PROGRESS
+  BLOCKED
+  DONE
+  CANCELLED
+}
+enum DependencyType {
+  FINISH_TO_START
+  START_TO_START
+  FINISH_TO_FINISH
+  START_TO_FINISH
+}
+enum RiskProbability {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+enum RiskImpact {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum RiskStatus {
+  OPEN
+  MITIGATING
+  ACCEPTED
+  CLOSED
+}
+enum IssueSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+enum StrategyContributionType {
+  DIRECT
+  ENABLING
+  SUPPORTING
+}
+enum ResourceStatus {
+  ACTIVE
+  INACTIVE
+  CONTRACTOR
+  ON_LEAVE
+}
+enum ResourceAllocationType {
+  PROJECT
+  PROGRAM
+  OPERATIONAL
+  LEAVE
+}
+enum ResourceAllocationStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+enum SkillProficiency {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum WorkflowDefinitionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum WorkflowInstanceStatus {
+  RUNNING
+  WAITING
+  COMPLETED
+  CANCELLED
+  FAILED
+  EXPIRED
+}
+
+enum WorkflowStepType {
+  START
+  USER_TASK
+  APPROVAL
+  DECISION
+  NOTIFICATION
+  AI_ACTION
+  WEBHOOK
+  END
+}
+
+enum WorkflowTaskStatus {
+  OPEN
+  COMPLETED
+  CANCELLED
+}
+
+
+
+enum ApprovalStrategy {
+  SINGLE
+  SEQUENTIAL
+  PARALLEL
+  MAJORITY
+  CONSENSUS
+  FIRST_RESPONSE
+}
+
+enum ApprovalRequestStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+  CANCELLED
+  EXPIRED
+}
+
+enum ApprovalStageStatus {
+  PENDING
+  ACTIVE
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+  SKIPPED
+}
+
+enum ApprovalAssignmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
+  DELEGATED
+  CANCELLED
+}
+
+enum ApprovalDecisionType {
+  APPROVE
+  REJECT
+  REQUEST_CHANGES
+}
+
+enum ApprovalDelegationType {
+  TEMPORARY
+  PERMANENT
+  OUT_OF_OFFICE
+  MANAGER
+}
+
+enum ApprovalEscalationType {
+  REMINDER
+  MANAGER
+  ROLE
+  USER
+}
+
+enum BusinessRuleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum BusinessRuleExecutionStatus {
+  MATCHED
+  NOT_MATCHED
+  FAILED
+  DRY_RUN
+}
+enum BusinessRuleActionType {
+  CREATE_TASK
+  SEND_NOTIFICATION
+  START_WORKFLOW
+  ASSIGN_USER
+  UPDATE_FIELD
+  INVOKE_AI
+  CALL_WEBHOOK
+  EMIT_EVENT
+}
+
+enum AutomationStatus {
+  DRAFT
+  PUBLISHED
+  PAUSED
+  ARCHIVED
+}
+enum AutomationTriggerType {
+  DOMAIN_EVENT
+  SCHEDULE
+  MANUAL
+  WEBHOOK
+  SLA_BREACH
+  APPROVAL_DECISION
+  RULE_MATCH
+}
+enum AutomationExecutionStatus {
+  RUNNING
+  SUCCEEDED
+  FAILED
+  SKIPPED
+  DRY_RUN
+}
+
+enum WorkflowHistoryType {
+  INSTANCE_STARTED
+  STEP_ENTERED
+  TASK_CREATED
+  TASK_COMPLETED
+  TRANSITIONED
+  INSTANCE_COMPLETED
+  INSTANCE_CANCELLED
+  INSTANCE_FAILED
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  timezone    String   @default("Asia/Riyadh")
+  currency    String   @default("SAR")
+  status      OrganizationStatus @default(ACTIVE)
+  users       User[]
+  departments Department[]
+  teams       Team[]
+  roles       Role[]
+  auditLogs   AuditLog[]
+  authTokens  AuthToken[]
+  okrCycles   OkrCycle[]
+  objectives  Objective[]
+  keyResults  KeyResult[]
+  initiatives Initiative[]
+  domainEvents DomainEvent[]
+  notifications Notification[]
+  notificationPreferences NotificationPreference[]
+  notificationDeliveries NotificationDelivery[]
+  apiKeys ApiKey[]
+  legacyWebhookSubscriptions LegacyWebhookSubscription[]
+  legacyWebhookDeliveries LegacyWebhookDelivery[]
+  settings OrganizationSetting[]
+  secrets TenantSecret[]
+  featureFlags FeatureFlagOverride[]
+  branding TenantBranding?
+  securityPolicy SecurityPolicy?
+  compliancePolicy CompliancePolicy?
+  identityProviders IdentityProvider[]
+  verifiedDomains VerifiedDomain[]
+  scimTokens ScimToken[]
+  directoryConnections DirectoryConnection[]
+  directorySyncRuns DirectorySyncRun[]
+  provisioningEvents ProvisioningEvent[]
+  sessions UserSession[]
+  aiGenerations AiGeneration[]
+  aiFeedback AiFeedback[]
+  portfolios Portfolio[]
+  programs Program[]
+  projects Project[]
+  workstreams Workstream[]
+  milestones ProjectMilestone[]
+  projectTasks ProjectTask[]
+  projectDependencies ProjectDependency[]
+  projectRisks ProjectRisk[]
+  projectIssues ProjectIssue[]
+  executionActivities ExecutionActivity[]
+  taskComments ProjectTaskComment[]
+  taskChecklists ProjectTaskChecklistItem[]
+  executionLabels ExecutionLabel[]
+  taskLabelLinks ProjectTaskLabel[]
+  taskAttachments ProjectTaskAttachment[]
+  taskDependencies ProjectTaskDependency[]
+  projectObjectiveLinks ProjectObjectiveLink[]
+  projectKeyResultLinks ProjectKeyResultLink[]
+  resources Resource[]
+  resourceTeams ResourceTeam[]
+  skills Skill[]
+  resourceSkills ResourceSkill[]
+  resourceTeamMemberships ResourceTeamMembership[]
+  resourceAllocations ResourceAllocation[]
+  workingCalendars WorkingCalendar[]
+  holidayCalendars HolidayCalendar[]
+  availabilityExceptions AvailabilityException[]
+  workflowDefinitions WorkflowDefinition[]
+  workflowInstances WorkflowInstance[]
+  workflowTasks WorkflowTask[]
+  workflowHistory WorkflowHistory[]
+  approvalRequests ApprovalRequest[]
+  approvalStages ApprovalStage[]
+  approvalAssignments ApprovalAssignment[]
+  approvalDecisions ApprovalDecision[]
+  approvalDelegations ApprovalDelegation[]
+  approvalEscalations ApprovalEscalation[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  businessRuleDefinitions BusinessRuleDefinition[]
+  businessRuleExecutions BusinessRuleExecution[]
+  notificationTemplates NotificationTemplate[]
+  notificationRoutes NotificationRoute[]
+  slaPolicies SlaPolicy[]
+  slaClocks SlaClock[]
+  slaEscalations SlaEscalation[]
+  automationDefinitions AutomationDefinition[]
+  automationExecutions AutomationExecution[]
+  governanceFrameworks GovernanceFramework[]
+  governancePolicies GovernancePolicy[]
+  governanceControls GovernanceControl[]
+  controlEvidence ControlEvidence[]
+  complianceAssessments ComplianceAssessment[]
+  riskRecords RiskRecord[]
+  riskAssessments RiskAssessment[]
+  riskTreatmentPlans RiskTreatmentPlan[]
+  controlTests ControlTest[]
+  controlTestExecutions ControlTestExecution[]
+  complianceFindings ComplianceFinding[]
+  correctiveActions CorrectiveAction[]
+  accessCertificationCampaigns AccessCertificationCampaign[]
+  accessCertificationReviews AccessCertificationReview[]
+  accessCertificationDecisions AccessCertificationDecision[]
+  sodRules SoDRule[]
+  sodViolations SoDViolation[]
+  sodExceptions SoDException[]
+  accessRequests AccessRequest[]
+  accessRequestApprovals AccessRequestApproval[]
+  privilegedAssignments PrivilegedAssignment[]
+  metricDefinitions MetricDefinition[]
+  metricSnapshots MetricSnapshot[]
+  analyticsFacts AnalyticsFact[]
+  dashboardDefinitions DashboardDefinition[]
+  aggregationJobs AggregationJob[]
+  dashboardSavedViews DashboardSavedView[]
+  predictionModels PredictionModel[]
+  predictionRuns PredictionRun[]
+  predictionResults PredictionResult[]
+  decisionPolicies DecisionPolicy[]
+  decisionRecommendations DecisionRecommendation[]
+  decisionSimulations DecisionSimulation[]
+  enterpriseInsights EnterpriseInsight[]
+  insightSubscriptions InsightSubscription[]
+  integrationDefinitions IntegrationDefinition[]
+  integrationInstances IntegrationInstance[]
+  connectorCredentials ConnectorCredential[]
+  integrationExecutions IntegrationExecution[]
+  integrationHealthRecords IntegrationHealth[]
+  businessConnectorProfiles BusinessConnectorProfile[]
+  enterpriseConnectorProfiles EnterpriseConnectorProfile[]
+  enterpriseConnectorMappings EnterpriseConnectorMapping[]
+  enterpriseConnectorSyncItems EnterpriseConnectorSyncItem[]
+  collaborationDeliveries CollaborationDelivery[]
+  connectorMappings BusinessConnectorMapping[]
+  connectorSyncItems ConnectorSyncItem[]
+  connectorConflicts ConnectorConflict[]
+  apiApplications ApiApplication[]
+  apiCredentials ApiCredential[]
+  apiProducts ApiProduct[]
+  apiProductVersions ApiProductVersion[]
+  apiUsageRecords ApiUsageRecord[]
+
+}
+
+model User {
+  id              String @id @default(cuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email           String
+  firstName       String
+  lastName        String
+  jobTitle        String?
+  phone           String?
+  locale          String @default("en")
+  passwordHash    String?
+  status          UserStatus @default(INVITED)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+  tokenVersion    Int @default(0)
+  departmentId    String?
+  department      Department? @relation(fields: [departmentId], references: [id])
+  managerId       String?
+  manager         User? @relation("UserManager", fields: [managerId], references: [id])
+  reports         User[] @relation("UserManager")
+  teamMemberships TeamMember[]
+  roles           UserRole[]
+  auditLogs       AuditLog[]
+  authTokens      AuthToken[]
+  ownedObjectives Objective[] @relation("ObjectiveOwner")
+  ownedKeyResults KeyResult[] @relation("KeyResultOwner")
+  checkIns        CheckIn[]
+  ownedInitiatives Initiative[] @relation("InitiativeOwner")
+  objectiveComments ObjectiveComment[]
+  okrActivities   OkrActivity[]
+  notifications   Notification[]
+  notificationPreference NotificationPreference?
+  notificationDeliveries NotificationDelivery[]
+  apiKeys ApiKey[]
+  legacyWebhookSubscriptions LegacyWebhookSubscription[]
+  sessions UserSession[]
+  createdIdentityProviders IdentityProvider[] @relation("IdentityProviderCreator")
+  createdScimTokens ScimToken[] @relation("ScimTokenCreator")
+  aiGenerations AiGeneration[]
+  aiFeedback AiFeedback[]
+  ownedPortfolios Portfolio[] @relation("PortfolioOwner")
+  ownedPrograms Program[] @relation("ProgramOwner")
+  ownedProjects Project[] @relation("ProjectOwner")
+  sponsoredProjects Project[] @relation("ProjectSponsor")
+  ownedWorkstreams Workstream[] @relation("WorkstreamOwner")
+  ownedMilestones ProjectMilestone[] @relation("MilestoneOwner")
+  assignedProjectTasks ProjectTask[] @relation("ProjectTaskAssignee")
+  reportedProjectRisks ProjectRisk[] @relation("ProjectRiskReporter")
+  ownedProjectRisks ProjectRisk[] @relation("ProjectRiskOwner")
+  reportedProjectIssues ProjectIssue[] @relation("ProjectIssueReporter")
+  ownedProjectIssues ProjectIssue[] @relation("ProjectIssueOwner")
+  executionActivities ExecutionActivity[] @relation("ExecutionActivityActor")
+  projectTaskComments ProjectTaskComment[] @relation("ProjectTaskCommentAuthor")
+  uploadedTaskAttachments ProjectTaskAttachment[] @relation("ProjectTaskAttachmentUploader")
+  resourceProfile Resource? @relation("ResourceUser")
+  ledResourceTeams ResourceTeam[] @relation("ResourceTeamLead")
+  resourceTeamMemberships ResourceTeamMembership[] @relation("ResourceTeamMembershipUser")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@unique([organizationId, email])
+  @@index([organizationId])
+  @@index([email])
+}
+
+model AuthToken {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           TokenType
+  tokenHash      String @unique
+  expiresAt      DateTime
+  consumedAt     DateTime?
+  revokedAt      DateTime?
+  replacedById   String?
+  createdAt      DateTime @default(now())
+  @@index([userId, type])
+  @@index([expiresAt])
+}
+
+model Department {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  code String?
+  description String?
+  users User[]
+  teams Team[]
+  objectives Objective[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model Team {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  departmentId String?
+  department Department? @relation(fields: [departmentId], references: [id])
+  name String
+  description String?
+  members TeamMember[]
+  objectives Objective[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model TeamMember {
+  teamId String
+  userId String
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role TeamMemberRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+  @@id([teamId, userId])
+}
+
+model Role {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  description String?
+  isSystem Boolean @default(false)
+  permissions RolePermission[]
+  users UserRole[]
+  @@unique([organizationId, name])
+}
+
+model Permission {
+  id String @id @default(cuid())
+  key String @unique
+  description String?
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId String
+  permissionId String
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  @@id([userId, roleId])
+}
+
+model AuditLog {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actorUserId String?
+  actor User? @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  action String
+  entityType String
+  entityId String?
+  metadata Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  @@index([organizationId, createdAt])
+}
+
+
+model OkrCycle {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  startDate      DateTime
+  endDate        DateTime
+  status         OkrCycleStatus @default(DRAFT)
+  isDefault      Boolean @default(false)
+  objectives     Objective[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, status])
+}
+
+model Objective {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  cycleId        String
+  cycle          OkrCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  scope          OkrScope
+  status         ObjectiveStatus @default(DRAFT)
+  ownerId        String
+  owner          User @relation("ObjectiveOwner", fields: [ownerId], references: [id])
+  departmentId   String?
+  department     Department? @relation(fields: [departmentId], references: [id])
+  teamId         String?
+  team           Team? @relation(fields: [teamId], references: [id])
+  parentId       String?
+  parent         Objective? @relation("ObjectiveAlignment", fields: [parentId], references: [id])
+  children       Objective[] @relation("ObjectiveAlignment")
+  progress       Float @default(0)
+  score          Float?
+  weight         Float @default(1)
+  dueDate        DateTime?
+  isPrivate      Boolean @default(false)
+  keyResults     KeyResult[]
+  comments       ObjectiveComment[]
+  activities     OkrActivity[]
+  projectLinks   ProjectObjectiveLink[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@index([organizationId, cycleId])
+  @@index([ownerId])
+  @@index([parentId])
+}
+
+model KeyResult {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  objectiveId    String
+  objective      Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  type           KeyResultType
+  status         KeyResultStatus @default(NOT_STARTED)
+  ownerId        String
+  owner          User @relation("KeyResultOwner", fields: [ownerId], references: [id])
+  startValue     Float @default(0)
+  targetValue    Float @default(100)
+  currentValue   Float @default(0)
+  unit           String?
+  progress       Float @default(0)
+  weight         Float @default(1)
+  confidence     ConfidenceLevel @default(MEDIUM)
+  dueDate        DateTime?
+  checkIns       CheckIn[]
+  initiatives    Initiative[]
+  activities     OkrActivity[]
+  projectLinks   ProjectKeyResultLink[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@index([organizationId, objectiveId])
+  @@index([ownerId])
+}
+
+model CheckIn {
+  id             String @id @default(cuid())
+  organizationId String
+  keyResultId    String
+  keyResult      KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User @relation(fields: [authorId], references: [id])
+  previousValue  Float
+  newValue       Float
+  progress       Float
+  confidence     ConfidenceLevel
+  status         KeyResultStatus
+  note           String?
+  createdAt      DateTime @default(now())
+  @@index([organizationId, keyResultId, createdAt])
+}
+
+model Initiative {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  keyResultId    String
+  keyResult      KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  ownerId        String
+  owner          User @relation("InitiativeOwner", fields: [ownerId], references: [id])
+  status         InitiativeStatus @default(PLANNED)
+  progress       Float @default(0)
+  startDate      DateTime?
+  dueDate        DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@index([organizationId, keyResultId])
+}
+
+model ObjectiveComment {
+  id          String @id @default(cuid())
+  objectiveId String
+  objective   Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User @relation(fields: [authorId], references: [id])
+  body        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@index([objectiveId, createdAt])
+}
+
+model OkrActivity {
+  id             String @id @default(cuid())
+  organizationId String
+  actorId        String?
+  actor          User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  objectiveId    String?
+  objective      Objective? @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  keyResultId    String?
+  keyResult      KeyResult? @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  action         String
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  @@index([organizationId, createdAt])
+  @@index([objectiveId])
+  @@index([keyResultId])
+}
+
+
+model DomainEvent {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  eventName      String
+  aggregateType  String
+  aggregateId    String
+  actorUserId    String?
+  payload        Json?
+  status         DomainEventStatus @default(PENDING)
+  attempts       Int @default(0)
+  processedAt    DateTime?
+  error          String?
+  createdAt      DateTime @default(now())
+  @@index([organizationId, createdAt])
+  @@index([status, createdAt])
+}
+
+model Notification {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           NotificationType @default(INFO)
+  eventName      String?
+  title          String
+  body           String
+  actionUrl      String?
+  metadata       Json?
+  readAt         DateTime?
+  archivedAt     DateTime?
+  createdAt      DateTime @default(now())
+  deliveries     NotificationDelivery[]
+  @@index([userId, readAt, createdAt])
+  @@index([organizationId, createdAt])
+}
+
+model NotificationPreference {
+  id                    String @id @default(cuid())
+  organizationId        String
+  organization          Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId                String @unique
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inAppEnabled          Boolean @default(true)
+  emailEnabled          Boolean @default(true)
+  checkInReminders      Boolean @default(true)
+  riskAlerts            Boolean @default(true)
+  assignmentAlerts      Boolean @default(true)
+  commentAlerts         Boolean @default(true)
+  weeklyDigest          Boolean @default(true)
+  reminderDayOfWeek     Int @default(4)
+  reminderHour          Int @default(9)
+  digestDayOfWeek       Int @default(0)
+  digestHour            Int @default(8)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  @@index([organizationId])
+}
+
+model NotificationDelivery {
+  id             String @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  notificationId String
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel        NotificationChannel
+  status         NotificationDeliveryStatus @default(PENDING)
+  provider       String?
+  providerMessageId String?
+  error          String?
+  sentAt         DateTime?
+  createdAt      DateTime @default(now())
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+}
+
+
+model ApiKey {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  name String
+  prefix String
+  keyHash String @unique
+  scopes String[]
+  status ApiKeyStatus @default(ACTIVE)
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status])
+}
+
+model LegacyWebhookSubscription {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  name String
+  url String
+  secretHash String
+  secretEncrypted String
+  events String[]
+  status WebhookStatus @default(ACTIVE)
+  consecutiveFailures Int @default(0)
+  lastDeliveredAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deliveries LegacyWebhookDelivery[]
+  @@index([organizationId, status])
+}
+
+model LegacyWebhookDelivery {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  subscriptionId String
+  subscription LegacyWebhookSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  domainEventId String
+  eventName String
+  payload Json
+  status LegacyWebhookDeliveryStatus @default(PENDING)
+  attempts Int @default(0)
+  nextAttemptAt DateTime @default(now())
+  responseStatus Int?
+  responseBody String?
+  lastError String?
+  deliveredAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([subscriptionId, domainEventId])
+  @@index([status, nextAttemptAt])
+  @@index([organizationId, createdAt])
+}
+
+
+model OrganizationSetting {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  namespace String
+  key String
+  value Json
+  isSecret Boolean @default(false)
+  updatedById String?
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, namespace, key])
+  @@index([organizationId, namespace])
+}
+
+model TenantSecret {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  encryptedValue String
+  fingerprint String
+  status SecretStatus @default(ACTIVE)
+  rotatedFromId String?
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name, status])
+  @@index([organizationId, status])
+}
+
+model FeatureFlagOverride {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key String
+  enabled Boolean @default(false)
+  value Json?
+  rolloutPercentage Int @default(100)
+  updatedById String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, key])
+}
+
+model TenantBranding {
+  id String @id @default(cuid())
+  organizationId String @unique
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  productName String @default("AchieveX")
+  logoUrl String?
+  darkLogoUrl String?
+  faviconUrl String?
+  primaryColor String @default("#3157D5")
+  secondaryColor String @default("#101828")
+  loginBackgroundUrl String?
+  supportEmail String?
+  supportUrl String?
+  customCss String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SecurityPolicy {
+  id String @id @default(cuid())
+  organizationId String @unique
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  ssoRequired Boolean @default(false)
+  passwordMinLength Int @default(10)
+  passwordRequireUppercase Boolean @default(true)
+  passwordRequireLowercase Boolean @default(true)
+  passwordRequireNumber Boolean @default(true)
+  passwordRequireSymbol Boolean @default(false)
+  passwordExpiryDays Int?
+  maxFailedAttempts Int @default(5)
+  lockoutMinutes Int @default(15)
+  sessionIdleMinutes Int @default(60)
+  sessionAbsoluteHours Int @default(168)
+  mfaRequired Boolean @default(false)
+  allowedIpCidrs String[]
+  allowedCountries String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CompliancePolicy {
+  id String @id @default(cuid())
+  organizationId String @unique
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  auditRetentionDays Int @default(2555)
+  activityRetentionDays Int @default(1095)
+  softDeleteRetentionDays Int @default(30)
+  notificationRetentionDays Int @default(365)
+  legalHoldEnabled Boolean @default(false)
+  dataResidencyRegion String @default("default")
+  privacyContactEmail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model IdentityProvider {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation("IdentityProviderCreator", fields: [createdById], references: [id])
+  name String
+  type IdentityProviderType
+  status IdentityProviderStatus @default(DRAFT)
+  issuerUrl String?
+  authorizationUrl String?
+  tokenUrl String?
+  userInfoUrl String?
+  clientId String?
+  clientSecretId String?
+  metadataUrl String?
+  entityId String?
+  certificateSecretId String?
+  emailDomains String[]
+  jitProvisioning Boolean @default(true)
+  defaultRoleName String @default("Employee")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  directoryConnections DirectoryConnection[]
+  @@unique([organizationId, name])
+  @@index([organizationId, status])
+}
+
+model VerifiedDomain {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  domain String
+  verificationToken String
+  status DomainVerificationStatus @default(PENDING)
+  verifiedAt DateTime?
+  autoJoinEnabled Boolean @default(false)
+  restrictInvites Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([domain])
+  @@index([organizationId, status])
+}
+
+model ScimToken {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy User @relation("ScimTokenCreator", fields: [createdById], references: [id])
+  name String
+  prefix String
+  tokenHash String @unique
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, revokedAt])
+}
+
+model UserSession {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status SessionStatus @default(ACTIVE)
+  ipAddress String?
+  userAgent String?
+  deviceName String?
+  browser String?
+  operatingSystem String?
+  countryCode String?
+  lastActivityAt DateTime @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+  revokedById String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, status])
+  @@index([userId, status])
+}
+
+
+model AiGeneration {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capability String
+  provider String
+  model String
+  promptVersion String
+  inputTokens Int @default(0)
+  outputTokens Int @default(0)
+  estimatedCostUsd Decimal @default(0) @db.Decimal(12, 6)
+  latencyMs Int @default(0)
+  request Json
+  response Json
+  status AiGenerationStatus @default(COMPLETED)
+  errorCode String?
+  createdAt DateTime @default(now())
+  feedback AiFeedback[]
+  @@index([organizationId, createdAt])
+  @@index([organizationId, capability, createdAt])
+  @@index([userId, createdAt])
+}
+
+model AiFeedback {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  generationId String
+  generation AiGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  helpful Boolean
+  comment String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([generationId, userId])
+  @@index([organizationId, createdAt])
+}
+
+
+model Portfolio {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  description String?
+  ownerId String
+  owner User @relation("PortfolioOwner", fields: [ownerId], references: [id])
+  status ExecutionStatus @default(DRAFT)
+  health ExecutionHealth @default(NOT_SET)
+  startDate DateTime?
+  endDate DateTime?
+  budget Decimal? @db.Decimal(18, 2)
+  actualCost Decimal @default(0) @db.Decimal(18, 2)
+  programs Program[]
+  projects Project[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, status])
+}
+
+model Program {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  portfolioId String?
+  portfolio Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  name String
+  description String?
+  ownerId String
+  owner User @relation("ProgramOwner", fields: [ownerId], references: [id])
+  status ExecutionStatus @default(DRAFT)
+  health ExecutionHealth @default(NOT_SET)
+  startDate DateTime?
+  endDate DateTime?
+  budget Decimal? @db.Decimal(18, 2)
+  actualCost Decimal @default(0) @db.Decimal(18, 2)
+  projects Project[]
+  resourceAllocations ResourceAllocation[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, portfolioId])
+}
+
+model Project {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  portfolioId String?
+  portfolio Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  programId String?
+  program Program? @relation(fields: [programId], references: [id], onDelete: SetNull)
+  key String
+  name String
+  description String?
+  ownerId String
+  owner User @relation("ProjectOwner", fields: [ownerId], references: [id])
+  sponsorId String?
+  sponsor User? @relation("ProjectSponsor", fields: [sponsorId], references: [id])
+  status ExecutionStatus @default(DRAFT)
+  health ExecutionHealth @default(NOT_SET)
+  priority ExecutionPriority @default(MEDIUM)
+  progress Decimal @default(0) @db.Decimal(5, 2)
+  startDate DateTime?
+  targetDate DateTime?
+  completedAt DateTime?
+  budget Decimal? @db.Decimal(18, 2)
+  actualCost Decimal @default(0) @db.Decimal(18, 2)
+  workstreams Workstream[]
+  milestones ProjectMilestone[]
+  tasks ProjectTask[]
+  predecessorDependencies ProjectDependency[] @relation("DependencyPredecessor")
+  successorDependencies ProjectDependency[] @relation("DependencySuccessor")
+  risks ProjectRisk[]
+  issues ProjectIssue[]
+  activities ExecutionActivity[]
+  objectiveLinks ProjectObjectiveLink[]
+  keyResultLinks ProjectKeyResultLink[]
+  createdAt DateTime @default(now())
+  resourceAllocations ResourceAllocation[]
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, key])
+  @@index([organizationId, status, health])
+  @@index([programId])
+}
+
+model Workstream {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name String
+  description String?
+  ownerId String
+  owner User @relation("WorkstreamOwner", fields: [ownerId], references: [id])
+  status ExecutionStatus @default(PLANNED)
+  health ExecutionHealth @default(NOT_SET)
+  progress Decimal @default(0) @db.Decimal(5, 2)
+  startDate DateTime?
+  targetDate DateTime?
+  milestones ProjectMilestone[]
+  tasks ProjectTask[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([projectId, name])
+  @@index([organizationId, projectId])
+}
+
+model ProjectMilestone {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  workstreamId String?
+  workstream Workstream? @relation(fields: [workstreamId], references: [id], onDelete: SetNull)
+  name String
+  description String?
+  ownerId String
+  owner User @relation("MilestoneOwner", fields: [ownerId], references: [id])
+  status WorkItemStatus @default(TODO)
+  plannedDate DateTime
+  actualDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, projectId, plannedDate])
+}
+
+model ProjectTask {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  workstreamId String?
+  workstream Workstream? @relation(fields: [workstreamId], references: [id], onDelete: SetNull)
+  parentId String?
+  parent ProjectTask? @relation("ProjectTaskHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children ProjectTask[] @relation("ProjectTaskHierarchy")
+  title String
+  description String?
+  assigneeId String?
+  assignee User? @relation("ProjectTaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  status WorkItemStatus @default(TODO)
+  priority ExecutionPriority @default(MEDIUM)
+  startDate DateTime?
+  dueDate DateTime?
+  estimateHours Decimal? @db.Decimal(8, 2)
+  actualHours Decimal? @db.Decimal(8, 2)
+  completedAt DateTime?
+  position Int @default(0)
+  comments ProjectTaskComment[]
+  checklist ProjectTaskChecklistItem[]
+  labels ProjectTaskLabel[]
+  attachments ProjectTaskAttachment[]
+  predecessorDependencies ProjectTaskDependency[] @relation("TaskDependencyPredecessor")
+  successorDependencies ProjectTaskDependency[] @relation("TaskDependencySuccessor")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, projectId, status])
+  @@index([assigneeId, status])
+}
+
+model ProjectObjectiveLink {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  objectiveId String
+  objective Objective @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  contributionType StrategyContributionType @default(DIRECT)
+  weight Decimal @default(100) @db.Decimal(5, 2)
+  rationale String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([projectId, objectiveId])
+  @@index([organizationId, objectiveId])
+}
+
+model ProjectKeyResultLink {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  keyResultId String
+  keyResult KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  contributionType StrategyContributionType @default(DIRECT)
+  weight Decimal @default(100) @db.Decimal(5, 2)
+  rationale String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([projectId, keyResultId])
+  @@index([organizationId, keyResultId])
+}
+
+model ProjectDependency {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  predecessorProjectId String
+  predecessorProject Project @relation("DependencyPredecessor", fields: [predecessorProjectId], references: [id], onDelete: Cascade)
+  successorProjectId String
+  successorProject Project @relation("DependencySuccessor", fields: [successorProjectId], references: [id], onDelete: Cascade)
+  type DependencyType @default(FINISH_TO_START)
+  lagDays Int @default(0)
+  createdAt DateTime @default(now())
+  @@unique([predecessorProjectId, successorProjectId, type])
+  @@index([organizationId, successorProjectId])
+}
+
+model ProjectRisk {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title String
+  description String?
+  probability RiskProbability
+  impact RiskImpact
+  status RiskStatus @default(OPEN)
+  mitigation String?
+  ownerId String?
+  owner User? @relation("ProjectRiskOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  reportedById String
+  reportedBy User @relation("ProjectRiskReporter", fields: [reportedById], references: [id])
+  dueDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, projectId, status])
+}
+
+model ProjectIssue {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title String
+  description String?
+  severity IssueSeverity
+  status IssueStatus @default(OPEN)
+  resolution String?
+  ownerId String?
+  owner User? @relation("ProjectIssueOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  reportedById String
+  reportedBy User @relation("ProjectIssueReporter", fields: [reportedById], references: [id])
+  dueDate DateTime?
+  resolvedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, projectId, status])
+}
+
+model ProjectTaskComment {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  taskId String
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  authorId String
+  author User @relation("ProjectTaskCommentAuthor", fields: [authorId], references: [id])
+  body String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, taskId, createdAt])
+}
+
+model ProjectTaskChecklistItem {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  taskId String
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  title String
+  completed Boolean @default(false)
+  position Int @default(0)
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, taskId, position])
+}
+
+model ExecutionLabel {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  color String @default("#64748b")
+  tasks ProjectTaskLabel[]
+  createdAt DateTime @default(now())
+  @@unique([organizationId, name])
+}
+
+model ProjectTaskLabel {
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  taskId String
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  labelId String
+  label ExecutionLabel @relation(fields: [labelId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@id([taskId, labelId])
+  @@index([organizationId, labelId])
+}
+
+model ProjectTaskAttachment {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  taskId String
+  task ProjectTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedById String
+  uploadedBy User @relation("ProjectTaskAttachmentUploader", fields: [uploadedById], references: [id])
+  fileName String
+  mimeType String
+  sizeBytes Int
+  storageKey String
+  downloadUrl String?
+  createdAt DateTime @default(now())
+  @@index([organizationId, taskId, createdAt])
+}
+
+model ProjectTaskDependency {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  predecessorTaskId String
+  predecessorTask ProjectTask @relation("TaskDependencyPredecessor", fields: [predecessorTaskId], references: [id], onDelete: Cascade)
+  successorTaskId String
+  successorTask ProjectTask @relation("TaskDependencySuccessor", fields: [successorTaskId], references: [id], onDelete: Cascade)
+  type DependencyType @default(FINISH_TO_START)
+  lagDays Int @default(0)
+  createdAt DateTime @default(now())
+  @@unique([predecessorTaskId, successorTaskId, type])
+  @@index([organizationId, successorTaskId])
+}
+
+model ExecutionActivity {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  actorId String?
+  actor User? @relation("ExecutionActivityActor", fields: [actorId], references: [id], onDelete: SetNull)
+  action String
+  entityType String
+  entityId String
+  metadata Json?
+  createdAt DateTime @default(now())
+  @@index([organizationId, projectId, createdAt])
+}
+
+
+model Resource {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId String? @unique
+  user User? @relation("ResourceUser", fields: [userId], references: [id], onDelete: SetNull)
+  employeeCode String?
+  displayName String
+  email String?
+  jobTitle String?
+  status ResourceStatus @default(ACTIVE)
+  capacityHoursPerWeek Decimal @default(40) @db.Decimal(8,2)
+  costRate Decimal? @db.Decimal(12,2)
+  currency String @default("SAR")
+  timezone String @default("Asia/Riyadh")
+  workingCalendarId String?
+  workingCalendar WorkingCalendar? @relation(fields: [workingCalendarId], references: [id], onDelete: SetNull)
+  skills ResourceSkill[]
+  teamMemberships ResourceTeamMembership[]
+  allocations ResourceAllocation[]
+  availabilityExceptions AvailabilityException[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, employeeCode])
+  @@index([organizationId, status])
+}
+
+model ResourceTeam {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  description String?
+  leadUserId String?
+  leadUser User? @relation("ResourceTeamLead", fields: [leadUserId], references: [id], onDelete: SetNull)
+  memberships ResourceTeamMembership[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model ResourceTeamMembership {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamId String
+  team ResourceTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  resourceId String
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  userId String?
+  user User? @relation("ResourceTeamMembershipUser", fields: [userId], references: [id], onDelete: SetNull)
+  role String?
+  allocationPercent Decimal @default(100) @db.Decimal(5,2)
+  startsAt DateTime?
+  endsAt DateTime?
+  createdAt DateTime @default(now())
+  @@unique([teamId, resourceId])
+  @@index([organizationId, resourceId])
+}
+
+model Skill {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  category String?
+  description String?
+  resources ResourceSkill[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model ResourceSkill {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  resourceId String
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  skillId String
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  proficiency SkillProficiency @default(INTERMEDIATE)
+  yearsExperience Decimal? @db.Decimal(5,1)
+  verified Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([resourceId, skillId])
+  @@index([organizationId, skillId])
+}
+
+model ResourceAllocation {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  resourceId String
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  projectId String?
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  programId String?
+  program Program? @relation(fields: [programId], references: [id], onDelete: Cascade)
+  type ResourceAllocationType @default(PROJECT)
+  status ResourceAllocationStatus @default(PLANNED)
+  title String
+  allocationPercent Decimal @db.Decimal(5,2)
+  hoursPerWeek Decimal? @db.Decimal(8,2)
+  startsAt DateTime
+  endsAt DateTime
+  notes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, startsAt, endsAt])
+  @@index([resourceId, startsAt, endsAt])
+}
+
+model WorkingCalendar {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  timezone String @default("Asia/Riyadh")
+  hoursPerDay Decimal @default(8) @db.Decimal(5,2)
+  workingDays Int[] @default([0,1,2,3,4])
+  isDefault Boolean @default(false)
+  resources Resource[]
+  holidayCalendarId String?
+  holidayCalendar HolidayCalendar? @relation(fields: [holidayCalendarId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model HolidayCalendar {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name String
+  countryCode String?
+  holidays Json @default("[]")
+  workingCalendars WorkingCalendar[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+}
+
+model AvailabilityException {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  resourceId String
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  startsAt DateTime
+  endsAt DateTime
+  availableHours Decimal @default(0) @db.Decimal(8,2)
+  reason String?
+  createdAt DateTime @default(now())
+  @@index([resourceId, startsAt, endsAt])
+}
+
+
+model WorkflowDefinition {
+  id             String                   @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key            String
+  name           String
+  description    String?
+  status         WorkflowDefinitionStatus @default(DRAFT)
+  currentVersion Int                      @default(0)
+  createdById    String
+  updatedById    String
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  versions       WorkflowVersion[]
+  instances      WorkflowInstance[]
+
+  @@unique([organizationId, key])
+  @@index([organizationId, status])
+}
+
+model WorkflowVersion {
+  id           String             @id @default(cuid())
+  definitionId String
+  version      Int
+  name         String
+  description  String?
+  isPublished  Boolean            @default(false)
+  publishedAt  DateTime?
+  publishedById String?
+  createdAt    DateTime           @default(now())
+  definition   WorkflowDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  steps        WorkflowStep[]
+  transitions  WorkflowTransition[]
+  instances    WorkflowInstance[]
+
+  @@unique([definitionId, version])
+  @@index([definitionId, isPublished])
+}
+
+model WorkflowStep {
+  id          String           @id @default(cuid())
+  versionId   String
+  key         String
+  name        String
+  type        WorkflowStepType
+  config      Json             @default("{}")
+  sortOrder   Int              @default(0)
+  version     WorkflowVersion  @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  outgoing    WorkflowTransition[] @relation("TransitionFrom")
+  incoming    WorkflowTransition[] @relation("TransitionTo")
+  activeInstances WorkflowInstance[] @relation("ActiveWorkflowStep")
+  tasks       WorkflowTask[]
+
+  @@unique([versionId, key])
+  @@index([versionId, sortOrder])
+}
+
+model WorkflowTransition {
+  id            String          @id @default(cuid())
+  versionId     String
+  fromStepId    String
+  toStepId      String
+  name          String?
+  condition     Json            @default("{}")
+  priority      Int             @default(0)
+  version       WorkflowVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  fromStep      WorkflowStep    @relation("TransitionFrom", fields: [fromStepId], references: [id], onDelete: Cascade)
+  toStep        WorkflowStep    @relation("TransitionTo", fields: [toStepId], references: [id], onDelete: Cascade)
+
+  @@index([versionId, fromStepId, priority])
+}
+
+model WorkflowInstance {
+  id             String                 @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  definitionId   String
+  versionId      String
+  status         WorkflowInstanceStatus @default(RUNNING)
+  businessKey    String?
+  entityType     String?
+  entityId       String?
+  activeStepId   String?
+  variables      Json                   @default("{}")
+  startedById    String
+  startedAt      DateTime               @default(now())
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  definition     WorkflowDefinition     @relation(fields: [definitionId], references: [id])
+  version        WorkflowVersion        @relation(fields: [versionId], references: [id])
+  activeStep     WorkflowStep?          @relation("ActiveWorkflowStep", fields: [activeStepId], references: [id])
+  tasks          WorkflowTask[]
+  history        WorkflowHistory[]
+  approvalRequests ApprovalRequest[]
+
+  @@index([organizationId, status])
+  @@index([organizationId, entityType, entityId])
+  @@index([definitionId, versionId])
+}
+
+model WorkflowTask {
+  id             String             @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  instanceId     String
+  stepId         String
+  status         WorkflowTaskStatus @default(OPEN)
+  title          String
+  description    String?
+  assigneeType   String?
+  assigneeId     String?
+  candidateRole  String?
+  dueAt          DateTime?
+  outcome        String?
+  payload        Json               @default("{}")
+  createdAt      DateTime           @default(now())
+  completedAt    DateTime?
+  completedById  String?
+  instance       WorkflowInstance   @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  step           WorkflowStep       @relation(fields: [stepId], references: [id])
+
+  @@index([organizationId, status, assigneeId])
+  @@index([instanceId, status])
+}
+
+model WorkflowHistory {
+  id             String              @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  instanceId     String
+  type           WorkflowHistoryType
+  stepId         String?
+  actorId         String?
+  message         String
+  data            Json                @default("{}")
+  createdAt       DateTime            @default(now())
+  instance        WorkflowInstance    @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, instanceId, createdAt])
+}
+
+
+model ApprovalRequest {
+  id                 String                @id @default(cuid())
+  organizationId     String
+  organization       Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workflowInstanceId String?
+  workflowInstance   WorkflowInstance?     @relation(fields: [workflowInstanceId], references: [id], onDelete: SetNull)
+  title              String
+  description        String?
+  entityType         String?
+  entityId           String?
+  businessKey        String?
+  strategy           ApprovalStrategy      @default(SINGLE)
+  status             ApprovalRequestStatus @default(DRAFT)
+  currentStageOrder  Int                   @default(1)
+  requestedById      String
+  requestedAt        DateTime?
+  completedAt        DateTime?
+  dueAt              DateTime?
+  metadata           Json                  @default("{}")
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  stages             ApprovalStage[]
+  decisions          ApprovalDecision[]
+  escalations        ApprovalEscalation[]
+
+  @@index([organizationId, status, createdAt])
+  @@index([organizationId, entityType, entityId])
+  @@index([workflowInstanceId])
+}
+
+model ApprovalStage {
+  id             String              @id @default(cuid())
+  organizationId String
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestId      String
+  request        ApprovalRequest     @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  name           String
+  stageOrder     Int
+  strategy       ApprovalStrategy
+  status         ApprovalStageStatus @default(PENDING)
+  minApprovals   Int?
+  dueAt          DateTime?
+  activatedAt    DateTime?
+  completedAt    DateTime?
+  assignments    ApprovalAssignment[]
+  decisions      ApprovalDecision[]
+  escalations    ApprovalEscalation[]
+
+  @@unique([requestId, stageOrder])
+  @@index([organizationId, status, dueAt])
+}
+
+model ApprovalAssignment {
+  id             String                   @id @default(cuid())
+  organizationId String
+  organization   Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stageId        String
+  stage          ApprovalStage             @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  approverId     String
+  originalApproverId String?
+  status         ApprovalAssignmentStatus @default(PENDING)
+  assignedAt     DateTime                 @default(now())
+  dueAt          DateTime?
+  delegatedAt    DateTime?
+  completedAt    DateTime?
+  decisions      ApprovalDecision[]
+
+  @@unique([stageId, approverId])
+  @@index([organizationId, approverId, status])
+}
+
+model ApprovalDecision {
+  id             String               @id @default(cuid())
+  organizationId String
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestId      String
+  request        ApprovalRequest      @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  stageId        String
+  stage          ApprovalStage        @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  assignmentId   String
+  assignment     ApprovalAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  decision       ApprovalDecisionType
+  decidedById    String
+  comment        String?
+  metadata       Json                 @default("{}")
+  createdAt      DateTime             @default(now())
+
+  @@index([organizationId, requestId, createdAt])
+  @@index([stageId, decision])
+}
+
+model ApprovalDelegation {
+  id             String                 @id @default(cuid())
+  organizationId String
+  organization   Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  delegatorId    String
+  delegateId     String
+  type           ApprovalDelegationType @default(TEMPORARY)
+  startsAt       DateTime
+  endsAt         DateTime?
+  reason         String?
+  isActive       Boolean                @default(true)
+  createdById    String
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  @@index([organizationId, delegatorId, isActive, startsAt, endsAt])
+  @@index([organizationId, delegateId, isActive])
+}
+
+model ApprovalEscalation {
+  id             String                 @id @default(cuid())
+  organizationId String
+  organization   Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestId      String
+  request        ApprovalRequest        @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  stageId        String
+  stage          ApprovalStage          @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  type           ApprovalEscalationType
+  targetUserId   String?
+  targetRole     String?
+  reason         String
+  escalatedAt    DateTime               @default(now())
+  resolvedAt     DateTime?
+
+  @@index([organizationId, stageId, escalatedAt])
+  @@index([requestId])
+}
+
+
+model BusinessRuleDefinition {
+  id             String             @id @default(cuid())
+  organizationId String
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key            String
+  name           String
+  description    String?
+  status         BusinessRuleStatus @default(DRAFT)
+  activeVersionId String?
+  createdById    String
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  versions       BusinessRuleVersion[]
+  executions     BusinessRuleExecution[]
+  @@unique([organizationId, key])
+  @@index([organizationId, status])
+}
+
+model BusinessRuleVersion {
+  id            String                 @id @default(cuid())
+  definitionId  String
+  definition    BusinessRuleDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  version       Int
+  conditions    Json
+  actions       Json
+  priority      Int                    @default(100)
+  stopOnMatch   Boolean                @default(false)
+  publishedAt   DateTime?
+  createdById   String
+  createdAt     DateTime               @default(now())
+  executions    BusinessRuleExecution[]
+  @@unique([definitionId, version])
+  @@index([definitionId, publishedAt])
+}
+
+model BusinessRuleExecution {
+  id             String                      @id @default(cuid())
+  organizationId String
+  organization   Organization                @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  definitionId   String
+  definition     BusinessRuleDefinition      @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  versionId      String
+  version        BusinessRuleVersion         @relation(fields: [versionId], references: [id])
+  status         BusinessRuleExecutionStatus
+  entityType     String?
+  entityId       String?
+  triggerType    String?
+  context        Json
+  matched        Boolean
+  actionResults  Json                        @default("[]")
+  error          String?
+  executedById   String?
+  executedAt     DateTime                    @default(now())
+  @@index([organizationId, executedAt])
+  @@index([definitionId, versionId])
+  @@index([organizationId, entityType, entityId])
+}
+
+
+model NotificationTemplate {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key String
+  name String
+  channel NotificationChannel
+  subjectTemplate String?
+  bodyTemplate String
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, key, channel])
+  @@index([organizationId, isActive])
+}
+
+model NotificationRoute {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  eventName String
+  channels NotificationChannel[]
+  recipientExpression String?
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, eventName])
+  @@index([organizationId, isActive])
+}
+
+model SlaPolicy {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key String
+  name String
+  description String?
+  status SlaPolicyStatus @default(DRAFT)
+  targetType SlaTargetType
+  targetMinutes Int
+  warningMinutes Int?
+  escalationAfterMinutes Int?
+  businessHoursOnly Boolean @default(false)
+  appliesToEntityType String?
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  clocks SlaClock[]
+  @@unique([organizationId, key])
+  @@index([organizationId, status])
+}
+
+model SlaClock {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  policyId String
+  policy SlaPolicy @relation(fields: [policyId], references: [id], onDelete: Restrict)
+  entityType String
+  entityId String
+  ownerUserId String?
+  status SlaClockStatus @default(RUNNING)
+  startedAt DateTime @default(now())
+  warningAt DateTime?
+  dueAt DateTime
+  pausedAt DateTime?
+  completedAt DateTime?
+  breachedAt DateTime?
+  elapsedMinutes Int @default(0)
+  metadata Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  escalations SlaEscalation[]
+  @@index([organizationId, status, dueAt])
+  @@index([entityType, entityId])
+  @@index([ownerUserId, status])
+}
+
+model SlaEscalation {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  clockId String
+  clock SlaClock @relation(fields: [clockId], references: [id], onDelete: Cascade)
+  level Int
+  status SlaEscalationStatus @default(PENDING)
+  targetType String
+  targetValue String
+  scheduledAt DateTime
+  triggeredAt DateTime?
+  notificationId String?
+  createdAt DateTime @default(now())
+  @@unique([clockId, level])
+  @@index([organizationId, status, scheduledAt])
+}
+
+model AutomationDefinition {
+  id              String           @id @default(cuid())
+  organizationId  String
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key             String
+  name            String
+  description     String?
+  status          AutomationStatus @default(DRAFT)
+  activeVersionId String?
+  createdById     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  versions        AutomationVersion[]
+  executions      AutomationExecution[]
+
+  @@unique([organizationId, key])
+  @@index([organizationId, status])
+}
+
+model AutomationVersion {
+  id            String                @id @default(cuid())
+  definitionId  String
+  definition    AutomationDefinition  @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  version       Int
+  triggerType   AutomationTriggerType
+  triggerConfig Json                  @default("{}")
+  conditions    Json?
+  actions       Json
+  publishedAt   DateTime?
+  createdById   String
+  createdAt     DateTime              @default(now())
+  executions    AutomationExecution[]
+
+  @@unique([definitionId, version])
+  @@index([definitionId, publishedAt])
+}
+
+model AutomationExecution {
+  id             String                    @id @default(cuid())
+  organizationId String
+  organization   Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  definitionId   String
+  definition     AutomationDefinition      @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  versionId      String
+  version        AutomationVersion         @relation(fields: [versionId], references: [id], onDelete: Restrict)
+  status         AutomationExecutionStatus
+  triggerType    AutomationTriggerType
+  triggerPayload Json                      @default("{}")
+  context        Json                      @default("{}")
+  actionResults  Json                      @default("[]")
+  error          String?
+  dryRun         Boolean                   @default(false)
+  startedAt      DateTime                  @default(now())
+  completedAt    DateTime?
+  initiatedById  String?
+
+  @@index([organizationId, status, startedAt])
+  @@index([definitionId, versionId])
+  @@index([organizationId, triggerType, startedAt])
+}
+
+
+enum MetricStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum MetricAggregation {
+  COUNT
+  SUM
+  AVERAGE
+  MIN
+  MAX
+  PERCENTAGE
+  RATIO
+  WEIGHTED_SCORE
+  FORMULA
+}
+enum AggregationJobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+enum ExecutiveDashboardAudience {
+  CEO
+  COO
+  CFO
+  CHRO
+  PMO
+  DEPARTMENT_HEAD
+  CUSTOM
+}
+
+model MetricDefinition {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  key String
+  name String
+  description String?
+  valueType String
+  unit String?
+  status MetricStatus @default(DRAFT)
+  activeVersionId String?
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  versions MetricVersion[]
+  snapshots MetricSnapshot[]
+  widgets DashboardWidget[]
+  jobs AggregationJob[]
+  @@unique([organizationId,key])
+  @@index([organizationId,status])
+}
+model MetricVersion {
+  id String @id @default(cuid())
+  definitionId String
+  definition MetricDefinition @relation(fields:[definitionId],references:[id],onDelete:Cascade)
+  version Int
+  aggregation MetricAggregation
+  formula Json
+  dimensions String[]
+  precision Int @default(2)
+  publishedAt DateTime?
+  createdById String
+  createdAt DateTime @default(now())
+  snapshots MetricSnapshot[]
+  @@unique([definitionId,version])
+}
+model MetricSnapshot {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  definitionId String
+  definition MetricDefinition @relation(fields:[definitionId],references:[id],onDelete:Cascade)
+  versionId String
+  version MetricVersion @relation(fields:[versionId],references:[id],onDelete:Restrict)
+  value Float
+  periodStart DateTime
+  periodEnd DateTime
+  grain String
+  dimensions Json @default("{}")
+  calculatedById String?
+  calculatedAt DateTime @default(now())
+  @@index([organizationId,definitionId,periodStart])
+}
+model AnalyticsFact {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  factType String
+  sourceEntityType String
+  sourceEntityId String
+  occurredAt DateTime
+  measures Json
+  dimensions Json
+  sourceEventId String?
+  createdAt DateTime @default(now())
+  @@index([organizationId,factType,occurredAt])
+  @@index([organizationId,sourceEntityType,sourceEntityId])
+}
+model DashboardDefinition {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  key String
+  name String
+  description String?
+  audience ExecutiveDashboardAudience @default(CUSTOM)
+  isTemplate Boolean @default(false)
+  layout Json @default("{}")
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  widgets DashboardWidget[]
+  savedViews DashboardSavedView[]
+  @@unique([organizationId,key])
+}
+model DashboardWidget {
+  id String @id @default(cuid())
+  dashboardId String
+  dashboard DashboardDefinition @relation(fields:[dashboardId],references:[id],onDelete:Cascade)
+  metricDefinitionId String?
+  metricDefinition MetricDefinition? @relation(fields:[metricDefinitionId],references:[id],onDelete:SetNull)
+  title String
+  type String
+  config Json @default("{}")
+  position Int
+  @@index([dashboardId,position])
+}
+
+model DashboardSavedView {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  dashboardId String
+  dashboard DashboardDefinition @relation(fields:[dashboardId],references:[id],onDelete:Cascade)
+  name String
+  filters Json @default("{}")
+  isDefault Boolean @default(false)
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([dashboardId,name,createdById])
+  @@index([organizationId,dashboardId])
+}
+
+model AggregationJob {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  metricDefinitionId String?
+  metricDefinition MetricDefinition? @relation(fields:[metricDefinitionId],references:[id],onDelete:SetNull)
+  grain String
+  periodStart DateTime
+  periodEnd DateTime
+  status AggregationJobStatus @default(PENDING)
+  processedCount Int @default(0)
+  error String?
+  initiatedById String?
+  startedAt DateTime?
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId,status,createdAt])
+}
+
+
+enum PredictionModelStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum PredictionModelType {
+  LINEAR_TREND
+  MOVING_AVERAGE
+  EXPONENTIAL_SMOOTHING
+  RISK_SCORE
+}
+enum PredictionTargetType {
+  OKR_ACHIEVEMENT
+  PROJECT_COMPLETION
+  RESOURCE_SHORTAGE
+  BUDGET_OVERRUN
+  DELIVERY_RISK
+  SLA_BREACH
+  CAPACITY_DEMAND
+}
+enum PredictionRunStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model PredictionModel {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  key String
+  name String
+  description String?
+  targetType PredictionTargetType
+  status PredictionModelStatus @default(DRAFT)
+  activeVersionId String?
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  versions PredictionModelVersion[]
+  runs PredictionRun[]
+  results PredictionResult[]
+  @@unique([organizationId,key])
+  @@index([organizationId,status,targetType])
+}
+
+model PredictionModelVersion {
+  id String @id @default(cuid())
+  modelId String
+  model PredictionModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  version Int
+  modelType PredictionModelType
+  configuration Json @default("{}")
+  featureKeys String[]
+  horizonPeriods Int @default(1)
+  minimumSamples Int @default(3)
+  publishedAt DateTime?
+  createdById String
+  createdAt DateTime @default(now())
+  runs PredictionRun[]
+  results PredictionResult[]
+  @@unique([modelId,version])
+}
+
+model PredictionRun {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  modelId String
+  model PredictionModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  versionId String
+  version PredictionModelVersion @relation(fields:[versionId],references:[id],onDelete:Restrict)
+  status PredictionRunStatus @default(PENDING)
+  input Json @default("{}")
+  output Json @default("{}")
+  error String?
+  dryRun Boolean @default(false)
+  initiatedById String?
+  startedAt DateTime @default(now())
+  completedAt DateTime?
+  results PredictionResult[]
+  @@index([organizationId,status,startedAt])
+  @@index([modelId,versionId])
+}
+
+model PredictionResult {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  modelId String
+  model PredictionModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  versionId String
+  version PredictionModelVersion @relation(fields:[versionId],references:[id],onDelete:Restrict)
+  runId String
+  run PredictionRun @relation(fields:[runId],references:[id],onDelete:Cascade)
+  entityType String
+  entityId String
+  predictedValue Float
+  probability Float?
+  confidence Float
+  horizonStart DateTime?
+  horizonEnd DateTime?
+  explanation Json @default("{}")
+  features Json @default("{}")
+  createdAt DateTime @default(now())
+  @@index([organizationId,entityType,entityId,createdAt])
+  @@index([organizationId,modelId,createdAt])
+}
+
+
+enum DecisionPolicyStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum RecommendationType {
+  REPRIORITIZE_INITIATIVE
+  REALLOCATE_RESOURCES
+  ESCALATE_APPROVAL
+  ADJUST_OBJECTIVE
+  RECOMMEND_HIRING
+  RECOMMEND_AUTOMATION
+  ADJUST_BUDGET
+  MITIGATE_RISK
+}
+enum RecommendationStatus {
+  PROPOSED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+  DEFERRED
+  APPLIED
+  EXPIRED
+}
+enum RecommendationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum RecommendationDisposition {
+  ACCEPT
+  REJECT
+  DEFER
+  MARK_APPLIED
+}
+
+model DecisionPolicy {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  key String
+  name String
+  description String?
+  recommendationType RecommendationType
+  status DecisionPolicyStatus @default(DRAFT)
+  activeVersionId String?
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  versions DecisionPolicyVersion[]
+  recommendations DecisionRecommendation[]
+  simulations DecisionSimulation[]
+  @@unique([organizationId,key])
+  @@index([organizationId,status,recommendationType])
+}
+
+model DecisionPolicyVersion {
+  id String @id @default(cuid())
+  policyId String
+  policy DecisionPolicy @relation(fields:[policyId],references:[id],onDelete:Cascade)
+  version Int
+  configuration Json @default("{}")
+  minimumConfidence Float @default(0.6)
+  publishedAt DateTime?
+  createdById String
+  createdAt DateTime @default(now())
+  recommendations DecisionRecommendation[]
+  simulations DecisionSimulation[]
+  @@unique([policyId,version])
+}
+
+model DecisionRecommendation {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  policyId String
+  policy DecisionPolicy @relation(fields:[policyId],references:[id],onDelete:Restrict)
+  versionId String
+  version DecisionPolicyVersion @relation(fields:[versionId],references:[id],onDelete:Restrict)
+  predictionResultId String?
+  title String
+  summary String
+  recommendationType RecommendationType
+  status RecommendationStatus @default(PROPOSED)
+  priority RecommendationPriority @default(MEDIUM)
+  entityType String
+  entityId String
+  confidence Float
+  evidence Json @default("[]")
+  expectedImpact Json @default("{}")
+  proposedActions Json @default("[]")
+  alternatives Json @default("[]")
+  rationale Json @default("{}")
+  expiresAt DateTime?
+  createdById String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  decisions RecommendationDecision[]
+  simulations DecisionSimulation[]
+  @@index([organizationId,status,priority,createdAt])
+  @@index([organizationId,entityType,entityId])
+}
+
+model RecommendationDecision {
+  id String @id @default(cuid())
+  recommendationId String
+  recommendation DecisionRecommendation @relation(fields:[recommendationId],references:[id],onDelete:Cascade)
+  disposition RecommendationDisposition
+  comment String?
+  decidedById String
+  decidedAt DateTime @default(now())
+  @@index([recommendationId,decidedAt])
+}
+
+model DecisionSimulation {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  policyId String
+  policy DecisionPolicy @relation(fields:[policyId],references:[id],onDelete:Restrict)
+  versionId String
+  version DecisionPolicyVersion @relation(fields:[versionId],references:[id],onDelete:Restrict)
+  recommendationId String?
+  recommendation DecisionRecommendation? @relation(fields:[recommendationId],references:[id],onDelete:SetNull)
+  scenarioName String
+  baseline Json @default("{}")
+  changes Json @default("{}")
+  projectedOutcome Json @default("{}")
+  confidence Float
+  explanation Json @default("{}")
+  createdById String
+  createdAt DateTime @default(now())
+  @@index([organizationId,createdAt])
+}
+
+enum InsightType {
+  KPI_ANOMALY
+  PREDICTION
+  SIGNAL
+  RECOMMENDATION
+  RISK
+  OPPORTUNITY
+  DECISION_UPDATE
+}
+enum InsightSeverity {
+  INFO
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum InsightStatus {
+  NEW
+  ACKNOWLEDGED
+  IN_REVIEW
+  RESOLVED
+  DISMISSED
+  EXPIRED
+}
+enum InsightSourceType {
+  METRIC_SNAPSHOT
+  PREDICTION_RESULT
+  DECISION_RECOMMENDATION
+  MANUAL
+  SYSTEM
+}
+enum InsightDigestFrequency {
+  IMMEDIATE
+  DAILY
+  WEEKLY
+}
+
+model EnterpriseInsight {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  type InsightType
+  severity InsightSeverity @default(MEDIUM)
+  status InsightStatus @default(NEW)
+  title String
+  summary String
+  sourceType InsightSourceType
+  sourceId String?
+  entityType String?
+  entityId String?
+  score Float @default(0)
+  confidence Float?
+  impact Json @default("{}")
+  evidence Json @default("[]")
+  tags String[]
+  assignedToId String?
+  dueAt DateTime?
+  expiresAt DateTime?
+  createdById String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  acknowledgements InsightAcknowledgement[]
+  @@index([organizationId,status,severity,createdAt])
+  @@index([organizationId,entityType,entityId])
+  @@unique([organizationId,sourceType,sourceId])
+}
+
+model InsightAcknowledgement {
+  id String @id @default(cuid())
+  insightId String
+  insight EnterpriseInsight @relation(fields:[insightId],references:[id],onDelete:Cascade)
+  userId String
+  note String?
+  status InsightStatus @default(ACKNOWLEDGED)
+  createdAt DateTime @default(now())
+  @@index([insightId,createdAt])
+}
+
+model InsightSubscription {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  userId String
+  name String
+  filters Json @default("{}")
+  frequency InsightDigestFrequency @default(DAILY)
+  channels String[]
+  enabled Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,userId,name])
+  @@index([organizationId,userId,enabled])
+}
+
+
+enum ConnectorLifecycleStatus {
+  DRAFT
+  PUBLISHED
+  DEPRECATED
+}
+enum IntegrationInstanceStatus {
+  DISCONNECTED
+  CONNECTING
+  ACTIVE
+  PAUSED
+  ERROR
+  DISABLED
+}
+enum IntegrationAuthType {
+  NONE
+  API_KEY
+  BEARER_TOKEN
+  BASIC_AUTH
+  OAUTH2
+  CLIENT_CREDENTIALS
+}
+enum IntegrationExecutionType {
+  TEST_CONNECTION
+  PULL
+  PUSH
+  SYNC
+  SUBSCRIBE
+  UNSUBSCRIBE
+  HEALTH_CHECK
+  WEBHOOK
+}
+enum IntegrationExecutionStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  RETRYING
+  DEAD_LETTER
+  CANCELLED
+}
+enum IntegrationHealthStatus {
+  UNKNOWN
+  HEALTHY
+  DEGRADED
+  UNHEALTHY
+}
+enum BusinessConnectorProvider {
+  JIRA
+  AZURE_DEVOPS
+  GITHUB
+  GITLAB
+  SERVICENOW
+  ASANA
+  MONDAY
+  TRELLO
+}
+enum ConnectorObjectType {
+  PROJECT
+  ISSUE
+  TASK
+  EPIC
+  STORY
+  BUG
+  PULL_REQUEST
+  REPOSITORY
+  WORK_ITEM
+  INCIDENT
+  CHANGE_REQUEST
+  BOARD
+}
+enum ConnectorMappingDirection {
+  INBOUND
+  OUTBOUND
+  BIDIRECTIONAL
+}
+enum ConnectorConflictStrategy {
+  SOURCE_WINS
+  TARGET_WINS
+  LATEST_WINS
+  MANUAL
+}
+enum ConnectorSyncItemStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  SKIPPED
+  CONFLICT
+}
+enum EnterpriseConnectorProvider {
+  WORKDAY
+  SAP_SUCCESSFACTORS
+  BAMBOOHR
+  HIBOB
+  SLACK
+  MICROSOFT_TEAMS
+  GOOGLE_WORKSPACE
+  MICROSOFT_365
+}
+enum EnterpriseConnectorDomain {
+  HRIS
+  COLLABORATION
+  PRODUCTIVITY
+}
+enum EnterpriseConnectorObjectType {
+  EMPLOYEE
+  ORGANIZATION_UNIT
+  POSITION
+  TEAM
+  CHANNEL
+  MESSAGE
+  CALENDAR_EVENT
+  DOCUMENT
+  DIRECTORY_GROUP
+}
+enum EnterpriseDeliveryStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  RETRYING
+  DEAD_LETTER
+  SKIPPED
+}
+
+model IntegrationDefinition {
+  id String @id @default(cuid())
+  organizationId String?
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  key String
+  name String
+  description String?
+  category String
+  iconUrl String?
+  documentationUrl String?
+  status ConnectorLifecycleStatus @default(DRAFT)
+  capabilities String[]
+  versions ConnectorVersion[]
+  instances IntegrationInstance[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, key])
+  @@index([status, category])
+}
+
+model ConnectorVersion {
+  id String @id @default(cuid())
+  definitionId String
+  definition IntegrationDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  version String
+  contract Json
+  configurationSchema Json?
+  authTypes IntegrationAuthType[]
+  status ConnectorLifecycleStatus @default(DRAFT)
+  publishedAt DateTime?
+  instances IntegrationInstance[]
+  createdAt DateTime @default(now())
+  @@unique([definitionId, version])
+}
+
+model IntegrationInstance {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  definitionId String
+  definition IntegrationDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+  connectorVersionId String
+  connectorVersion ConnectorVersion @relation(fields: [connectorVersionId], references: [id], onDelete: Restrict)
+  name String
+  status IntegrationInstanceStatus @default(DISCONNECTED)
+  configuration Json?
+  lastSyncAt DateTime?
+  credentials ConnectorCredential[]
+  executions IntegrationExecution[]
+  healthRecords IntegrationHealth[]
+  businessConnectorProfile BusinessConnectorProfile?
+  enterpriseConnectorProfile EnterpriseConnectorProfile?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, status])
+  @@unique([organizationId, name])
+}
+
+model ConnectorCredential {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  integrationInstanceId String
+  integrationInstance IntegrationInstance @relation(fields: [integrationInstanceId], references: [id], onDelete: Cascade)
+  authType IntegrationAuthType
+  encryptedPayload String
+  fingerprint String
+  expiresAt DateTime?
+  rotatedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, integrationInstanceId])
+}
+
+model IntegrationExecution {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  integrationInstanceId String
+  integrationInstance IntegrationInstance @relation(fields: [integrationInstanceId], references: [id], onDelete: Cascade)
+  type IntegrationExecutionType
+  status IntegrationExecutionStatus @default(PENDING)
+  correlationId String @default(cuid())
+  requestSummary Json?
+  responseSummary Json?
+  attempt Int @default(0)
+  durationMs Int?
+  errorCode String?
+  errorMessage String?
+  startedAt DateTime?
+  completedAt DateTime?
+  nextAttemptAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+  @@index([integrationInstanceId, createdAt])
+}
+
+model IntegrationHealth {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  integrationInstanceId String
+  integrationInstance IntegrationInstance @relation(fields: [integrationInstanceId], references: [id], onDelete: Cascade)
+  status IntegrationHealthStatus
+  latencyMs Int?
+  successRate Float?
+  retryQueueSize Int @default(0)
+  deadLetterCount Int @default(0)
+  details Json?
+  checkedAt DateTime @default(now())
+  @@index([organizationId, checkedAt])
+  @@index([integrationInstanceId, checkedAt])
+}
+
+
+model DirectoryConnection {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  identityProviderId String?
+  identityProvider IdentityProvider? @relation(fields: [identityProviderId], references: [id], onDelete: SetNull)
+  name String
+  provider DirectoryProviderType
+  status DirectoryConnectionStatus @default(DRAFT)
+  syncMode DirectorySyncMode @default(MANUAL)
+  baseUrl String?
+  tenantIdentifier String?
+  credentialSecretId String?
+  scheduleCron String?
+  provisioningEnabled Boolean @default(true)
+  deprovisioningEnabled Boolean @default(false)
+  groupSyncEnabled Boolean @default(false)
+  lastSyncAt DateTime?
+  lastSuccessfulSyncAt DateTime?
+  mappings DirectoryAttributeMapping[]
+  syncRuns DirectorySyncRun[]
+  provisioningEvents ProvisioningEvent[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, provider, status])
+}
+
+model DirectoryAttributeMapping {
+  id String @id @default(cuid())
+  directoryConnectionId String
+  directoryConnection DirectoryConnection @relation(fields: [directoryConnectionId], references: [id], onDelete: Cascade)
+  sourceAttribute String
+  targetAttribute String
+  transformation Json?
+  required Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([directoryConnectionId, sourceAttribute, targetAttribute])
+}
+
+model DirectorySyncRun {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  directoryConnectionId String
+  directoryConnection DirectoryConnection @relation(fields: [directoryConnectionId], references: [id], onDelete: Cascade)
+  status DirectorySyncStatus @default(PENDING)
+  correlationId String @default(cuid())
+  triggeredById String?
+  startedAt DateTime?
+  completedAt DateTime?
+  usersRead Int @default(0)
+  usersCreated Int @default(0)
+  usersUpdated Int @default(0)
+  usersSuspended Int @default(0)
+  groupsRead Int @default(0)
+  errors Int @default(0)
+  summary Json?
+  errorMessage String?
+  events ProvisioningEvent[]
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+  @@index([directoryConnectionId, createdAt])
+}
+
+model ProvisioningEvent {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  directoryConnectionId String
+  directoryConnection DirectoryConnection @relation(fields: [directoryConnectionId], references: [id], onDelete: Cascade)
+  syncRunId String?
+  syncRun DirectorySyncRun? @relation(fields: [syncRunId], references: [id], onDelete: SetNull)
+  action ProvisioningAction
+  status ProvisioningEventStatus @default(PENDING)
+  externalId String?
+  userId String?
+  userEmail String?
+  request Json?
+  result Json?
+  errorCode String?
+  errorMessage String?
+  occurredAt DateTime @default(now())
+  @@index([organizationId, occurredAt])
+  @@index([directoryConnectionId, status, occurredAt])
+}
+
+
+model BusinessConnectorProfile {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  integrationInstanceId String @unique
+  integrationInstance IntegrationInstance @relation(fields: [integrationInstanceId], references: [id], onDelete: Cascade)
+  provider BusinessConnectorProvider
+  baseUrl String?
+  accountKey String?
+  projectKeys String[]
+  repositoryNames String[]
+  enabledObjects ConnectorObjectType[]
+  conflictStrategy ConnectorConflictStrategy @default(MANUAL)
+  cursor Json?
+  settings Json?
+  mappings BusinessConnectorMapping[]
+  syncItems ConnectorSyncItem[]
+  conflicts ConnectorConflict[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, provider])
+}
+
+model BusinessConnectorMapping {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile BusinessConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  objectType ConnectorObjectType
+  direction ConnectorMappingDirection @default(INBOUND)
+  sourceField String
+  targetField String
+  transform Json?
+  required Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([profileId, objectType, sourceField, targetField])
+  @@index([organizationId, profileId])
+}
+
+model ConnectorSyncItem {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile BusinessConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  executionId String?
+  externalId String
+  externalType ConnectorObjectType
+  internalEntityType String?
+  internalEntityId String?
+  sourceUpdatedAt DateTime?
+  targetUpdatedAt DateTime?
+  status ConnectorSyncItemStatus @default(PENDING)
+  checksum String?
+  errorMessage String?
+  payloadSummary Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([profileId, externalType, externalId])
+  @@index([organizationId, status, updatedAt])
+}
+
+model ConnectorConflict {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile BusinessConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  syncItemId String?
+  objectType ConnectorObjectType
+  externalId String
+  field String
+  sourceValue Json?
+  targetValue Json?
+  resolution ConnectorConflictStrategy?
+  resolvedByUserId String?
+  resolvedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, resolvedAt, createdAt])
+}
+
+
+model EnterpriseConnectorProfile {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  integrationInstanceId String @unique
+  integrationInstance IntegrationInstance @relation(fields: [integrationInstanceId], references: [id], onDelete: Cascade)
+  provider EnterpriseConnectorProvider
+  domain EnterpriseConnectorDomain
+  baseUrl String?
+  tenantKey String?
+  enabledObjects EnterpriseConnectorObjectType[]
+  settings Json?
+  cursor Json?
+  lastSuccessfulSyncAt DateTime?
+  mappings EnterpriseConnectorMapping[]
+  syncItems EnterpriseConnectorSyncItem[]
+  deliveries CollaborationDelivery[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, provider])
+}
+
+model EnterpriseConnectorMapping {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile EnterpriseConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  objectType EnterpriseConnectorObjectType
+  sourceField String
+  targetField String
+  direction ConnectorMappingDirection @default(INBOUND)
+  transform Json?
+  required Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([profileId, objectType, sourceField, targetField])
+  @@index([organizationId, profileId])
+}
+
+model EnterpriseConnectorSyncItem {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile EnterpriseConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  executionId String?
+  externalId String
+  objectType EnterpriseConnectorObjectType
+  internalEntityType String?
+  internalEntityId String?
+  sourceUpdatedAt DateTime?
+  status ConnectorSyncItemStatus @default(PENDING)
+  checksum String?
+  payloadSummary Json?
+  errorMessage String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([profileId, objectType, externalId])
+  @@index([organizationId, status, updatedAt])
+}
+
+model CollaborationDelivery {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId String
+  profile EnterpriseConnectorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  provider EnterpriseConnectorProvider
+  destinationType String
+  destinationId String
+  messageType String
+  idempotencyKey String
+  payload Json
+  status EnterpriseDeliveryStatus @default(PENDING)
+  externalMessageId String?
+  attempt Int @default(0)
+  errorCode String?
+  errorMessage String?
+  deliveredAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, idempotencyKey])
+  @@index([profileId, status, createdAt])
+}
+
+
+enum ApiApplicationStatus {
+  DRAFT
+  ACTIVE
+  SUSPENDED
+  REVOKED
+}
+enum ApiCredentialStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+enum ApiProductStatus {
+  DRAFT
+  PUBLISHED
+  DEPRECATED
+  RETIRED
+}
+enum ApiAudience {
+  PRIVATE
+  PARTNER
+  PUBLIC
+}
+enum ApiVersionLifecycle {
+  DRAFT
+  BETA
+  STABLE
+  DEPRECATED
+  RETIRED
+}
+
+model ApiApplication {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  name String
+  description String?
+  status ApiApplicationStatus @default(DRAFT)
+  redirectUris String[]
+  requestedScopes String[]
+  credentials ApiCredential[]
+  usageRecords ApiUsageRecord[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status])
+}
+
+model ApiCredential {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  applicationId String
+  application ApiApplication @relation(fields:[applicationId], references:[id], onDelete:Cascade)
+  name String
+  prefix String
+  secretHash String @unique
+  scopes String[]
+  status ApiCredentialStatus @default(ACTIVE)
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,applicationId,status])
+}
+
+model ApiProduct {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  name String
+  slug String
+  description String?
+  audience ApiAudience @default(PRIVATE)
+  status ApiProductStatus @default(DRAFT)
+  defaultVersion String @default("v2")
+  scopes String[]
+  versions ApiProductVersion[]
+  usageRecords ApiUsageRecord[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,slug])
+  @@index([organizationId,status,audience])
+}
+
+model ApiProductVersion {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  apiProductId String
+  apiProduct ApiProduct @relation(fields:[apiProductId], references:[id], onDelete:Cascade)
+  version String
+  lifecycle ApiVersionLifecycle @default(DRAFT)
+  changelog String?
+  schemaUrl String?
+  sunsetAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([apiProductId,version])
+  @@index([organizationId,lifecycle])
+}
+
+model ApiUsageRecord {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  applicationId String?
+  application ApiApplication? @relation(fields:[applicationId], references:[id], onDelete:SetNull)
+  apiProductId String?
+  apiProduct ApiProduct? @relation(fields:[apiProductId], references:[id], onDelete:SetNull)
+  route String
+  method String
+  statusCode Int
+  durationMs Int
+  requestId String?
+  units Int @default(1)
+  occurredAt DateTime @default(now())
+  @@index([organizationId,occurredAt])
+  @@index([applicationId,occurredAt])
+  @@index([apiProductId,occurredAt])
+}
+
+
+enum GovernanceFrameworkType {
+  ISO_27001
+  SOC_2
+  NIST_CSF
+  CUSTOM
+}
+enum GovernancePolicyStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  RETIRED
+}
+enum GovernanceControlStatus {
+  PLANNED
+  IMPLEMENTED
+  PARTIAL
+  NOT_IMPLEMENTED
+}
+enum ComplianceAssessmentStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model GovernanceFramework {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  name String
+  type GovernanceFrameworkType
+  version String?
+  description String?
+  controls GovernanceControl[]
+  assessments ComplianceAssessment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name,version])
+  @@index([organizationId,type])
+}
+
+model GovernancePolicy {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  code String
+  title String
+  description String?
+  status GovernancePolicyStatus @default(DRAFT)
+  tags String[]
+  approvedAt DateTime?
+  effectiveAt DateTime?
+  reviewAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,code])
+  @@index([organizationId,status])
+}
+
+model GovernanceControl {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  frameworkId String
+  framework GovernanceFramework @relation(fields:[frameworkId], references:[id], onDelete:Cascade)
+  code String
+  title String
+  description String?
+  status GovernanceControlStatus @default(PLANNED)
+  ownerUserId String?
+  automated Boolean @default(false)
+  evidence ControlEvidence[]
+  controlTests ControlTest[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([frameworkId,code])
+  @@index([organizationId,status])
+}
+
+model ControlEvidence {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  controlId String
+  control GovernanceControl @relation(fields:[controlId], references:[id], onDelete:Cascade)
+  name String
+  sourceType String
+  sourceUrl String?
+  description String?
+  checksum String?
+  collectedAt DateTime @default(now())
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId,controlId,collectedAt])
+}
+
+model ComplianceAssessment {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId], references:[id], onDelete:Cascade)
+  frameworkId String
+  framework GovernanceFramework @relation(fields:[frameworkId], references:[id], onDelete:Cascade)
+  name String
+  scope String?
+  assessorUserId String?
+  status ComplianceAssessmentStatus @default(PLANNED)
+  score Float?
+  findings Json?
+  startedAt DateTime?
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,createdAt])
+}
+
+
+enum RiskRecordStatus {
+  OPEN
+  MONITORING
+  ACCEPTED
+  MITIGATED
+  CLOSED
+}
+enum RiskLevel {
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum ControlTestType {
+  MANUAL
+  AUTOMATED
+  SAMPLING
+  CONTINUOUS
+}
+enum ControlTestStatus {
+  SCHEDULED
+  RUNNING
+  PASSED
+  FAILED
+  PARTIAL
+  CANCELLED
+}
+enum FindingSeverity {
+  INFORMATIONAL
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum FindingStatus {
+  OPEN
+  TRIAGED
+  ASSIGNED
+  RESOLVED
+  CLOSED
+}
+enum CorrectiveActionStatus {
+  OPEN
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  VERIFIED
+  CANCELLED
+}
+model RiskRecord {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  title String
+  description String?
+  category String
+  ownerUserId String?
+  likelihood Int
+  impact Int
+  controlEffectiveness Float @default(0)
+  inherentScore Float
+  residualScore Float
+  level RiskLevel
+  status RiskRecordStatus @default(OPEN)
+  reviewAt DateTime?
+  lastAssessedAt DateTime?
+  assessments RiskAssessment[]
+  treatmentPlans RiskTreatmentPlan[]
+  findings ComplianceFinding[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,level])
+}
+model RiskAssessment {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  riskId String
+  risk RiskRecord @relation(fields:[riskId],references:[id],onDelete:Cascade)
+  assessorUserId String
+  likelihood Int
+  impact Int
+  controlEffectiveness Float
+  inherentScore Float
+  residualScore Float
+  level RiskLevel
+  rationale String?
+  createdAt DateTime @default(now())
+  @@index([organizationId,riskId,createdAt])
+}
+model RiskTreatmentPlan {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  riskId String
+  risk RiskRecord @relation(fields:[riskId],references:[id],onDelete:Cascade)
+  strategy String
+  ownerUserId String?
+  targetDate DateTime?
+  status String @default("PLANNED")
+  notes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,riskId])
+}
+model ControlTest {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  controlId String
+  control GovernanceControl @relation(fields:[controlId],references:[id],onDelete:Cascade)
+  type ControlTestType
+  status ControlTestStatus @default(SCHEDULED)
+  scheduledAt DateTime?
+  lastExecutedAt DateTime?
+  executions ControlTestExecution[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,scheduledAt])
+}
+model ControlTestExecution {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  controlTestId String
+  controlTest ControlTest @relation(fields:[controlTestId],references:[id],onDelete:Cascade)
+  executorUserId String
+  result ControlTestStatus
+  notes String?
+  evidenceIds String[]
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId,controlTestId,createdAt])
+}
+model ComplianceFinding {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  title String
+  description String?
+  severity FindingSeverity
+  status FindingStatus @default(OPEN)
+  controlId String?
+  riskId String?
+  risk RiskRecord? @relation(fields:[riskId],references:[id],onDelete:SetNull)
+  ownerUserId String?
+  dueAt DateTime?
+  rootCause String?
+  resolutionNotes String?
+  actions CorrectiveAction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,severity])
+}
+model CorrectiveAction {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  findingId String
+  finding ComplianceFinding @relation(fields:[findingId],references:[id],onDelete:Cascade)
+  title String
+  description String?
+  ownerUserId String?
+  status CorrectiveActionStatus @default(OPEN)
+  progress Int @default(0)
+  dueAt DateTime?
+  verifiedAt DateTime?
+  tasks CorrectiveTask[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,dueAt])
+}
+model CorrectiveTask {
+  id String @id @default(cuid())
+  actionId String
+  action CorrectiveAction @relation(fields:[actionId],references:[id],onDelete:Cascade)
+  title String
+  completed Boolean @default(false)
+  dueAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([actionId,completed])
+}
+
+enum CertificationCampaignType {
+  ORGANIZATION
+  DEPARTMENT
+  BUSINESS_UNIT
+  APPLICATION
+  ROLE
+  PRIVILEGED_ACCESS
+}
+enum CertificationCampaignStatus {
+  DRAFT
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  CANCELLED
+}
+enum CertificationReviewStatus {
+  PENDING
+  APPROVED
+  REVOKED
+  DELEGATED
+  EXPIRED
+}
+enum CertificationDecisionType {
+  APPROVED
+  REVOKED
+  DELEGATED
+  JUSTIFICATION_REQUIRED
+  EXCEPTION
+}
+enum SoDSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+enum SoDViolationStatus {
+  OPEN
+  MITIGATED
+  EXCEPTED
+  RESOLVED
+}
+enum AccessRequestStatus {
+  SUBMITTED
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  PROVISIONED
+  COMPLETED
+  CANCELLED
+}
+enum PrivilegedAssignmentStatus {
+  REQUESTED
+  APPROVED
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+model AccessCertificationCampaign {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  name String
+  type CertificationCampaignType
+  scopeRef String?
+  status CertificationCampaignStatus @default(DRAFT)
+  dueAt DateTime
+  reviewerUserIds String[]
+  createdByUserId String
+  reviews AccessCertificationReview[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,dueAt])
+}
+model AccessCertificationReview {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  campaignId String
+  campaign AccessCertificationCampaign @relation(fields:[campaignId],references:[id],onDelete:Cascade)
+  reviewerUserId String
+  subjectUserId String
+  entitlement String
+  application String?
+  riskScore Float?
+  status CertificationReviewStatus @default(PENDING)
+  completedAt DateTime?
+  decisions AccessCertificationDecision[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,reviewerUserId,status])
+}
+model AccessCertificationDecision {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  reviewId String
+  review AccessCertificationReview @relation(fields:[reviewId],references:[id],onDelete:Cascade)
+  decidedByUserId String
+  decision CertificationDecisionType
+  justification String?
+  delegatedToUserId String?
+  createdAt DateTime @default(now())
+  @@index([organizationId,reviewId,createdAt])
+}
+model SoDRule {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  name String
+  description String?
+  category String
+  leftEntitlement String
+  rightEntitlement String
+  severity SoDSeverity
+  active Boolean @default(true)
+  violations SoDViolation[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name])
+}
+model SoDViolation {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  ruleId String
+  rule SoDRule @relation(fields:[ruleId],references:[id],onDelete:Cascade)
+  userId String
+  severity SoDSeverity
+  status SoDViolationStatus @default(OPEN)
+  detectedAt DateTime @default(now())
+  resolvedAt DateTime?
+  exceptions SoDException[]
+  @@index([organizationId,status,severity])
+}
+model SoDException {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  violationId String
+  violation SoDViolation @relation(fields:[violationId],references:[id],onDelete:Cascade)
+  reason String
+  approvedByUserId String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([organizationId,expiresAt])
+}
+model AccessRequest {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  requesterUserId String
+  entitlement String
+  application String?
+  justification String?
+  status AccessRequestStatus @default(SUBMITTED)
+  expiresAt DateTime?
+  approvals AccessRequestApproval[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,requesterUserId,status])
+}
+model AccessRequestApproval {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  requestId String
+  request AccessRequest @relation(fields:[requestId],references:[id],onDelete:Cascade)
+  approverUserId String
+  stage String
+  decision String?
+  notes String?
+  decidedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId,requestId,stage])
+}
+model PrivilegedAssignment {
+  id String @id @default(cuid())
+  organizationId String
+  organization Organization @relation(fields:[organizationId],references:[id],onDelete:Cascade)
+  roleName String
+  userId String
+  requestedByUserId String
+  status PrivilegedAssignmentStatus @default(REQUESTED)
+  startsAt DateTime
+  expiresAt DateTime
+  breakGlass Boolean @default(false)
+  justification String?
+  approvedByUserId String?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,expiresAt])
+}
+
+
+// Milestone 16 Sprint 16.1 — Enterprise AI Platform
+enum AIProviderType {
+  OPENAI
+  AZURE_OPENAI
+  ANTHROPIC
+  GOOGLE_GEMINI
+  OLLAMA
+  OPENAI_COMPATIBLE
+}
+enum AIProviderStatus {
+  DRAFT
+  ACTIVE
+  DISABLED
+  DEPRECATED
+}
+enum AIModelStatus {
+  DRAFT
+  ACTIVE
+  DISABLED
+  DEPRECATED
+}
+enum PromptLifecycleStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+enum AIExecutionStatus {
+  COMPLETED
+  FAILED
+  BLOCKED
+  TIMEOUT
+}
+model AIProvider {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  type AIProviderType
+  status AIProviderStatus @default(DRAFT)
+  endpoint String?
+  credentialRef String?
+  configuration Json @default("{}")
+  models AIModel[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name])
+  @@index([organizationId,status])
+}
+model AIModel {
+  id String @id @default(cuid())
+  organizationId String
+  providerId String
+  provider AIProvider @relation(fields:[providerId],references:[id],onDelete:Cascade)
+  name String
+  externalId String
+  capabilities String[]
+  contextWindow Int?
+  maxOutputTokens Int?
+  inputCostPerMillion Float?
+  outputCostPerMillion Float?
+  status AIModelStatus @default(DRAFT)
+  usage AITokenUsage[]
+  costs AICostRecord[]
+  audits AIExecutionAudit[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([providerId,externalId])
+  @@index([organizationId,status])
+}
+model PromptTemplate {
+  id String @id @default(cuid())
+  organizationId String
+  key String
+  name String
+  domain String
+  status PromptLifecycleStatus @default(DRAFT)
+  versions PromptTemplateVersion[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,key])
+  @@index([organizationId,domain,status])
+}
+model PromptTemplateVersion {
+  id String @id @default(cuid())
+  organizationId String
+  templateId String
+  template PromptTemplate @relation(fields:[templateId],references:[id],onDelete:Cascade)
+  version Int
+  content String
+  variables String[]
+  status PromptLifecycleStatus @default(DRAFT)
+  createdByUserId String
+  approvedByUserId String?
+  approvedAt DateTime?
+  usage AITokenUsage[]
+  audits AIExecutionAudit[]
+  createdAt DateTime @default(now())
+  @@unique([templateId,version])
+  @@index([organizationId,status])
+}
+model AITokenUsage {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  module String
+  providerId String
+  modelId String
+  model AIModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  promptVersionId String?
+  promptVersion PromptTemplateVersion? @relation(fields:[promptVersionId],references:[id],onDelete:SetNull)
+  correlationId String
+  promptTokens Int @default(0)
+  completionTokens Int @default(0)
+  totalTokens Int @default(0)
+  createdAt DateTime @default(now())
+  @@index([organizationId,createdAt])
+  @@index([correlationId])
+}
+model AICostRecord {
+  id String @id @default(cuid())
+  organizationId String
+  providerId String
+  modelId String
+  model AIModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  correlationId String
+  currency String @default("USD")
+  estimatedCost Float @default(0)
+  createdAt DateTime @default(now())
+  @@index([organizationId,createdAt])
+  @@index([correlationId])
+}
+model AIExecutionAudit {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  module String
+  providerId String
+  modelId String
+  model AIModel @relation(fields:[modelId],references:[id],onDelete:Cascade)
+  promptVersionId String?
+  promptVersion PromptTemplateVersion? @relation(fields:[promptVersionId],references:[id],onDelete:SetNull)
+  correlationId String @unique
+  status AIExecutionStatus
+  durationMs Int
+  safetyOutcome String
+  promptSnapshot Json?
+  responseSnapshot Json?
+  errorMessage String?
+  createdAt DateTime @default(now())
+  @@index([organizationId,createdAt])
+  @@index([organizationId,status])
+}
+
+// Milestone 16 Sprint 16.2 — Enterprise AI Copilot
+enum CopilotConversationStatus {
+  ACTIVE
+  ARCHIVED
+  CLOSED
+}
+enum CopilotMessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+enum CopilotFeedbackRating {
+  HELPFUL
+  NOT_HELPFUL
+}
+enum CopilotActionStatus {
+  SUGGESTED
+  APPROVED
+  REJECTED
+  EXECUTED
+  FAILED
+}
+model CopilotConversation {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  title String?
+  domain String
+  status CopilotConversationStatus @default(ACTIVE)
+  context Json @default("{}")
+  messages CopilotMessage[]
+  actions CopilotSuggestedAction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,userId,status,updatedAt])
+}
+model CopilotMessage {
+  id String @id @default(cuid())
+  organizationId String
+  conversationId String
+  conversation CopilotConversation @relation(fields:[conversationId],references:[id],onDelete:Cascade)
+  role CopilotMessageRole
+  content String
+  citations Json?
+  correlationId String?
+  feedback CopilotFeedback?
+  createdAt DateTime @default(now())
+  @@index([organizationId,conversationId,createdAt])
+  @@index([correlationId])
+}
+model CopilotFeedback {
+  id String @id @default(cuid())
+  organizationId String
+  messageId String @unique
+  message CopilotMessage @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  userId String
+  rating CopilotFeedbackRating
+  comment String?
+  createdAt DateTime @default(now())
+  @@index([organizationId,userId,createdAt])
+}
+model CopilotSuggestedAction {
+  id String @id @default(cuid())
+  organizationId String
+  conversationId String
+  conversation CopilotConversation @relation(fields:[conversationId],references:[id],onDelete:Cascade)
+  type String
+  title String
+  description String?
+  payload Json
+  status CopilotActionStatus @default(SUGGESTED)
+  requestedByUserId String
+  approvedByUserId String?
+  approvedAt DateTime?
+  executedAt DateTime?
+  executionResult Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,createdAt])
+}
+
+// Milestone 16 Sprint 16.3 — Enterprise Knowledge Platform and RAG
+enum KnowledgeSourceStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+  ARCHIVED
+}
+enum KnowledgeVisibility {
+  ORGANIZATION
+  RESTRICTED
+  PRIVATE
+}
+enum KnowledgeIndexStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+model KnowledgeSource {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  type String
+  status KnowledgeSourceStatus @default(DRAFT)
+  configuration Json @default("{}")
+  documents KnowledgeDocument[]
+  jobs KnowledgeIndexJob[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name])
+  @@index([organizationId,status,type])
+}
+model KnowledgeDocument {
+  id String @id @default(cuid())
+  organizationId String
+  sourceId String
+  source KnowledgeSource @relation(fields:[sourceId],references:[id],onDelete:Cascade)
+  externalId String
+  title String
+  documentType String
+  language String @default("en")
+  visibility KnowledgeVisibility @default(ORGANIZATION)
+  allowedUserIds String[]
+  metadata Json @default("{}")
+  checksum String
+  version Int @default(1)
+  indexedAt DateTime?
+  chunks KnowledgeChunk[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,sourceId,externalId])
+  @@index([organizationId,documentType,visibility])
+  @@index([organizationId,indexedAt])
+}
+model KnowledgeChunk {
+  id String @id @default(cuid())
+  organizationId String
+  documentId String
+  document KnowledgeDocument @relation(fields:[documentId],references:[id],onDelete:Cascade)
+  position Int
+  content String
+  tokenCount Int
+  metadata Json @default("{}")
+  embedding KnowledgeEmbedding?
+  createdAt DateTime @default(now())
+  @@unique([documentId,position])
+  @@index([organizationId,documentId])
+}
+model KnowledgeEmbedding {
+  id String @id @default(cuid())
+  organizationId String
+  chunkId String @unique
+  chunk KnowledgeChunk @relation(fields:[chunkId],references:[id],onDelete:Cascade)
+  provider String
+  model String
+  dimension Int
+  vector Float[]
+  createdAt DateTime @default(now())
+  @@index([organizationId,provider,model])
+}
+model KnowledgeIndexJob {
+  id String @id @default(cuid())
+  organizationId String
+  sourceId String
+  source KnowledgeSource @relation(fields:[sourceId],references:[id],onDelete:Cascade)
+  status KnowledgeIndexStatus @default(PENDING)
+  requestedByUserId String
+  documentCount Int @default(0)
+  chunkCount Int @default(0)
+  errorMessage String?
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,createdAt])
+}
+model KnowledgeQueryAudit {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  query String
+  resultCount Int
+  topScore Float
+  createdAt DateTime @default(now())
+  @@index([organizationId,userId,createdAt])
+}
+
+// Milestone 16 Sprint 16.4 — AI Agents and Workflow Automation
+enum AIAgentStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+enum AIAgentRunStatus {
+  QUEUED
+  RUNNING
+  WAITING_APPROVAL
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+enum AIAgentStepStatus {
+  PENDING
+  RUNNING
+  WAITING_APPROVAL
+  COMPLETED
+  FAILED
+  REJECTED
+  SKIPPED
+}
+enum AIAgentApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+model AIAgent {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  key String
+  purpose String
+  status AIAgentStatus @default(DRAFT)
+  allowedTools String[]
+  approvalRequired Boolean @default(true)
+  maxSteps Int @default(8)
+  createdByUserId String
+  runs AIAgentRun[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,key])
+  @@index([organizationId,status])
+}
+model AIAgentRun {
+  id String @id @default(cuid())
+  organizationId String
+  agentId String
+  agent AIAgent @relation(fields:[agentId],references:[id],onDelete:Cascade)
+  userId String
+  objective String
+  status AIAgentRunStatus @default(QUEUED)
+  context Json @default("{}")
+  correlationId String @unique
+  errorMessage String?
+  startedAt DateTime?
+  completedAt DateTime?
+  steps AIAgentStep[]
+  approvals AIAgentApproval[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,createdAt])
+}
+model AIAgentStep {
+  id String @id @default(cuid())
+  organizationId String
+  runId String
+  run AIAgentRun @relation(fields:[runId],references:[id],onDelete:Cascade)
+  stepNumber Int
+  type String
+  toolName String?
+  status AIAgentStepStatus @default(PENDING)
+  input Json @default("{}")
+  output Json?
+  errorMessage String?
+  approvals AIAgentApproval[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([runId,stepNumber])
+  @@index([organizationId,status])
+}
+model AIAgentApproval {
+  id String @id @default(cuid())
+  organizationId String
+  runId String
+  run AIAgentRun @relation(fields:[runId],references:[id],onDelete:Cascade)
+  stepId String
+  step AIAgentStep @relation(fields:[stepId],references:[id],onDelete:Cascade)
+  requestedByUserId String
+  decidedByUserId String?
+  status AIAgentApprovalStatus @default(PENDING)
+  reason String?
+  decidedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId,status,createdAt])
+}
+
+// Milestone 17 Sprint 17.1 — Enterprise Collaboration Hub
+enum ConversationType {
+  DIRECT
+  GROUP
+  PROJECT
+  OKR
+  INITIATIVE
+  RISK
+  AUDIT
+  DOCUMENT
+  ANNOUNCEMENT
+}
+enum ConversationStatus {
+  ACTIVE
+  ARCHIVED
+  CLOSED
+}
+enum CollaborationRole {
+  OWNER
+  MODERATOR
+  MEMBER
+  GUEST
+  HOST
+}
+enum MessageReactionType {
+  LIKE
+  LOVE
+  CELEBRATE
+  ACKNOWLEDGE
+  QUESTION
+  WATCHING
+}
+model Conversation {
+  id String @id @default(cuid())
+  organizationId String
+  title String
+  type ConversationType
+  status ConversationStatus @default(ACTIVE)
+  linkedEntityType String?
+  linkedEntityId String?
+  createdByUserId String
+  participants ConversationParticipant[]
+  messages ConversationMessage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,updatedAt])
+  @@index([organizationId,linkedEntityType,linkedEntityId])
+}
+model ConversationParticipant {
+  id String @id @default(cuid())
+  organizationId String
+  conversationId String
+  conversation Conversation @relation(fields:[conversationId],references:[id],onDelete:Cascade)
+  userId String
+  role CollaborationRole @default(MEMBER)
+  lastReadAt DateTime?
+  joinedAt DateTime @default(now())
+  @@unique([conversationId,userId])
+  @@index([organizationId,userId])
+}
+model ConversationMessage {
+  id String @id @default(cuid())
+  organizationId String
+  conversationId String
+  conversation Conversation @relation(fields:[conversationId],references:[id],onDelete:Cascade)
+  authorUserId String
+  parentMessageId String?
+  content String
+  editedAt DateTime?
+  deletedAt DateTime?
+  reactions MessageReaction[]
+  receipts MessageReceipt[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,conversationId,createdAt])
+  @@index([parentMessageId])
+}
+model MessageReaction {
+  id String @id @default(cuid())
+  organizationId String
+  messageId String
+  message ConversationMessage @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  userId String
+  type MessageReactionType
+  createdAt DateTime @default(now())
+  @@unique([messageId,userId,type],name:"messageId_userId_type")
+  @@index([organizationId,userId])
+}
+model ActivityEvent {
+  id String @id @default(cuid())
+  organizationId String
+  actorUserId String?
+  type String
+  entityType String
+  entityId String
+  payload Json @default("{}")
+  audienceUserIds String[]
+  createdAt DateTime @default(now())
+  @@index([organizationId,createdAt])
+  @@index([organizationId,entityType,entityId])
+}
+
+// Milestone 17 Sprint 17.2 — Real-Time Collaboration and Presence
+enum PresenceState {
+  ONLINE
+  AWAY
+  BUSY
+  OFFLINE
+  DO_NOT_DISTURB
+}
+enum CollaborationSessionStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+model PresenceSession {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  deviceId String
+  connectionId String
+  status PresenceState @default(ONLINE)
+  activeWorkspace String?
+  activeEntityType String?
+  activeEntityId String?
+  lastHeartbeatAt DateTime @default(now())
+  disconnectedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,userId,deviceId],name:"organizationId_userId_deviceId")
+  @@index([organizationId,status,lastHeartbeatAt])
+}
+model MessageReceipt {
+  id String @id @default(cuid())
+  organizationId String
+  messageId String
+  message ConversationMessage @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  userId String
+  deliveredAt DateTime?
+  readAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([messageId,userId],name:"messageId_userId")
+  @@index([organizationId,userId,readAt])
+}
+model CollaborationSession {
+  id String @id @default(cuid())
+  organizationId String
+  title String
+  entityType String?
+  entityId String?
+  status CollaborationSessionStatus @default(ACTIVE)
+  createdByUserId String
+  participants CollaborationSessionParticipant[]
+  endedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,updatedAt])
+}
+model CollaborationSessionParticipant {
+  id String @id @default(cuid())
+  organizationId String
+  sessionId String
+  session CollaborationSession @relation(fields:[sessionId],references:[id],onDelete:Cascade)
+  userId String
+  role CollaborationRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+  leftAt DateTime?
+  @@unique([sessionId,userId])
+  @@index([organizationId,userId])
+}
+
+// Milestone 17 Sprint 17.3 — Enterprise Documents and Knowledge Authoring
+enum EnterpriseDocumentStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+}
+enum EnterpriseDocumentVisibility {
+  ORGANIZATION
+  RESTRICTED
+  PRIVATE
+}
+enum DocumentCollaboratorRole {
+  OWNER
+  EDITOR
+  REVIEWER
+  VIEWER
+}
+enum DocumentReviewStatus {
+  PENDING
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+model EnterpriseDocument {
+  id String @id @default(cuid())
+  organizationId String
+  title String
+  summary String?
+  status EnterpriseDocumentStatus @default(DRAFT)
+  visibility EnterpriseDocumentVisibility @default(ORGANIZATION)
+  allowedUserIds String[]
+  ownerUserId String
+  templateKey String?
+  currentVersionId String?
+  knowledgeDocumentId String?
+  versions EnterpriseDocumentVersion[]
+  reviews DocumentReview[]
+  collaborators DocumentCollaborator[]
+  publishedAt DateTime?
+  archivedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,updatedAt])
+  @@index([organizationId,ownerUserId])
+}
+model EnterpriseDocumentVersion {
+  id String @id @default(cuid())
+  organizationId String
+  documentId String
+  document EnterpriseDocument @relation(fields:[documentId],references:[id],onDelete:Cascade)
+  version Int
+  content String
+  changeSummary String?
+  metadata Json @default("{}")
+  createdByUserId String
+  reviews DocumentReview[]
+  createdAt DateTime @default(now())
+  @@unique([documentId,version])
+  @@index([organizationId,createdAt])
+}
+model DocumentCollaborator {
+  id String @id @default(cuid())
+  organizationId String
+  documentId String
+  document EnterpriseDocument @relation(fields:[documentId],references:[id],onDelete:Cascade)
+  userId String
+  role DocumentCollaboratorRole @default(VIEWER)
+  createdAt DateTime @default(now())
+  @@unique([documentId,userId])
+  @@index([organizationId,userId])
+}
+model DocumentReview {
+  id String @id @default(cuid())
+  organizationId String
+  documentId String
+  document EnterpriseDocument @relation(fields:[documentId],references:[id],onDelete:Cascade)
+  versionId String
+  version EnterpriseDocumentVersion @relation(fields:[versionId],references:[id],onDelete:Cascade)
+  requestedByUserId String
+  reviewerUserId String
+  status DocumentReviewStatus @default(PENDING)
+  comments String?
+  dueAt DateTime?
+  decidedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,reviewerUserId,status])
+  @@index([documentId,versionId])
+}
+
+// Milestone 17 Sprint 17.4 — Team Workspaces and Communities
+enum WorkspaceVisibility {
+  PRIVATE
+  INTERNAL
+  PUBLIC
+}
+enum WorkspaceStatus {
+  ACTIVE
+  ARCHIVED
+}
+enum WorkspaceMemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+enum CommunityMembershipPolicy {
+  OPEN
+  REQUEST_TO_JOIN
+  INVITE_ONLY
+}
+enum CommunityStatus {
+  ACTIVE
+  ARCHIVED
+}
+enum CommunityMemberRole {
+  OWNER
+  MODERATOR
+  MEMBER
+}
+model TeamWorkspace {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  description String?
+  visibility WorkspaceVisibility @default(INTERNAL)
+  status WorkspaceStatus @default(ACTIVE)
+  createdByUserId String
+  members WorkspaceMember[]
+  communities Community[]
+  resources WorkspaceResource[]
+  announcements WorkspaceAnnouncement[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,updatedAt])
+  @@unique([organizationId,name])
+}
+model WorkspaceMember {
+  id String @id @default(cuid())
+  organizationId String
+  workspaceId String
+  workspace TeamWorkspace @relation(fields:[workspaceId],references:[id],onDelete:Cascade)
+  userId String
+  role WorkspaceMemberRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+  leftAt DateTime?
+  @@unique([workspaceId,userId])
+  @@index([organizationId,userId,leftAt])
+}
+model WorkspaceResource {
+  id String @id @default(cuid())
+  organizationId String
+  workspaceId String
+  workspace TeamWorkspace @relation(fields:[workspaceId],references:[id],onDelete:Cascade)
+  resourceType String
+  resourceId String
+  label String?
+  linkedByUserId String
+  createdAt DateTime @default(now())
+  @@unique([workspaceId,resourceType,resourceId])
+  @@index([organizationId,resourceType,resourceId])
+}
+model WorkspaceAnnouncement {
+  id String @id @default(cuid())
+  organizationId String
+  workspaceId String
+  workspace TeamWorkspace @relation(fields:[workspaceId],references:[id],onDelete:Cascade)
+  title String
+  content String
+  authorUserId String
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,workspaceId,createdAt])
+}
+model Community {
+  id String @id @default(cuid())
+  organizationId String
+  workspaceId String?
+  workspace TeamWorkspace? @relation(fields:[workspaceId],references:[id],onDelete:SetNull)
+  name String
+  description String?
+  membershipPolicy CommunityMembershipPolicy @default(OPEN)
+  status CommunityStatus @default(ACTIVE)
+  createdByUserId String
+  members CommunityMember[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name])
+  @@index([organizationId,status,updatedAt])
+}
+model CommunityMember {
+  id String @id @default(cuid())
+  organizationId String
+  communityId String
+  community Community @relation(fields:[communityId],references:[id],onDelete:Cascade)
+  userId String
+  role CommunityMemberRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+  leftAt DateTime?
+  @@unique([communityId,userId])
+  @@index([organizationId,userId,leftAt])
+}
+
+// Milestone 17 Sprint 17.5 — Enterprise Communication and Digital Workplace
+enum EnterpriseAnnouncementStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+enum EnterpriseAnnouncementSeverity {
+  INFORMATION
+  SUCCESS
+  WARNING
+  CRITICAL
+}
+enum CommunicationCampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  CANCELLED
+}
+model EnterpriseAnnouncement {
+  id String @id @default(cuid())
+  organizationId String
+  title String
+  content String
+  severity EnterpriseAnnouncementSeverity @default(INFORMATION)
+  status EnterpriseAnnouncementStatus @default(DRAFT)
+  audienceUserIds String[]
+  audienceDepartmentIds String[]
+  requiresAcknowledgement Boolean @default(false)
+  createdByUserId String
+  publishAt DateTime?
+  publishedAt DateTime?
+  expiresAt DateTime?
+  acknowledgements AnnouncementAcknowledgement[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,publishAt])
+}
+model AnnouncementAcknowledgement {
+  id String @id @default(cuid())
+  organizationId String
+  announcementId String
+  announcement EnterpriseAnnouncement @relation(fields:[announcementId],references:[id],onDelete:Cascade)
+  userId String
+  note String?
+  acknowledgedAt DateTime @default(now())
+  @@unique([announcementId,userId])
+  @@index([organizationId,userId,acknowledgedAt])
+}
+model CommunicationCampaign {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  subject String
+  content String
+  channels String[]
+  audienceUserIds String[]
+  audienceDepartmentIds String[]
+  status CommunicationCampaignStatus @default(DRAFT)
+  createdByUserId String
+  scheduledAt DateTime?
+  sentAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,scheduledAt])
+}
+model DigitalWorkplacePreference {
+  id String @id @default(cuid())
+  organizationId String
+  userId String
+  showAnnouncements Boolean @default(true)
+  showActivity Boolean @default(true)
+  showDocuments Boolean @default(true)
+  showWorkspaces Boolean @default(true)
+  feedPageSize Int @default(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,userId])
+}
+
+
+enum DeveloperApplicationEnvironment {
+  DEVELOPMENT
+  SANDBOX
+  PRODUCTION
+}
+enum DeveloperApplicationStatus {
+  ACTIVE
+  SUSPENDED
+}
+enum DeveloperCredentialStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+enum DeveloperAccessGrantStatus {
+  ACTIVE
+  REVOKED
+}
+enum DeveloperRateLimitPeriod {
+  MINUTE
+  HOUR
+  DAY
+  MONTH
+}
+enum DeveloperRateLimitDecision {
+  ALLOWED
+  DENIED
+}
+
+model DeveloperApplication {
+  id String @id @default(cuid())
+  organizationId String
+  ownerUserId String
+  name String
+  description String?
+  environment DeveloperApplicationEnvironment @default(DEVELOPMENT)
+  status DeveloperApplicationStatus @default(ACTIVE)
+  redirectUris String[]
+  requestedScopes String[]
+  rateLimitPolicyId String?
+  rateLimitPolicy DeveloperRateLimitPolicy? @relation(fields:[rateLimitPolicyId], references:[id], onDelete:SetNull)
+  credentials DeveloperCredential[]
+  accessGrants DeveloperAccessGrant[]
+  requestLogs DeveloperApiRequestLog[]
+  webhookSubscriptions WebhookSubscription[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status,environment])
+  @@index([ownerUserId])
+}
+
+model DeveloperCredential {
+  id String @id @default(cuid())
+  organizationId String
+  applicationId String
+  application DeveloperApplication @relation(fields:[applicationId], references:[id], onDelete:Cascade)
+  name String
+  prefix String
+  secretHash String @unique
+  scopes String[]
+  status DeveloperCredentialStatus @default(ACTIVE)
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  revokedAt DateTime?
+  replacedById String?
+  accessGrants DeveloperAccessGrant[]
+  requestLogs DeveloperApiRequestLog[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,applicationId,status])
+  @@index([prefix])
+}
+
+model DeveloperApiScope {
+  id String @id @default(cuid())
+  key String @unique
+  description String
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DeveloperAccessGrant {
+  id String @id @default(cuid())
+  organizationId String
+  applicationId String
+  application DeveloperApplication @relation(fields:[applicationId], references:[id], onDelete:Cascade)
+  credentialId String?
+  credential DeveloperCredential? @relation(fields:[credentialId], references:[id], onDelete:Cascade)
+  scope String
+  resourceType String?
+  resourceId String?
+  status DeveloperAccessGrantStatus @default(ACTIVE)
+  expiresAt DateTime?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,applicationId,status])
+  @@index([credentialId,status])
+}
+
+model DeveloperRateLimitPolicy {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  description String?
+  limit Int
+  burstLimit Int
+  period DeveloperRateLimitPeriod
+  environment DeveloperApplicationEnvironment @default(PRODUCTION)
+  active Boolean @default(true)
+  applications DeveloperApplication[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId,name,environment])
+  @@index([organizationId,active])
+}
+
+model DeveloperApiRequestLog {
+  id String @id @default(cuid())
+  organizationId String
+  applicationId String?
+  application DeveloperApplication? @relation(fields:[applicationId], references:[id], onDelete:SetNull)
+  credentialId String?
+  credential DeveloperCredential? @relation(fields:[credentialId], references:[id], onDelete:SetNull)
+  endpoint String
+  method String
+  statusCode Int
+  durationMs Int
+  correlationId String
+  rateLimitDecision DeveloperRateLimitDecision @default(ALLOWED)
+  idempotencyKey String?
+  occurredAt DateTime @default(now())
+  @@index([organizationId,occurredAt])
+  @@index([applicationId,occurredAt])
+  @@index([credentialId,occurredAt])
+  @@index([correlationId])
+}
+
+// Milestone 18 Sprint 18.2 — Webhooks, Event Subscriptions and Delivery Reliability
+enum WebhookSubscriptionStatus {
+  ACTIVE
+  PAUSED
+  DISABLED
+}
+enum WebhookDeliveryStatus {
+  PENDING
+  DELIVERING
+  SUCCEEDED
+  RETRY_SCHEDULED
+  DEAD_LETTERED
+  CANCELLED
+}
+enum WebhookEventStatus {
+  PENDING
+  DISPATCHED
+  PARTIALLY_FAILED
+  FAILED
+}
+model WebhookSubscription {
+  id String @id @default(cuid())
+  organizationId String
+  applicationId String?
+  application DeveloperApplication? @relation(fields:[applicationId],references:[id],onDelete:SetNull)
+  name String
+  endpointUrl String
+  eventTypes String[]
+  status WebhookSubscriptionStatus @default(ACTIVE)
+  secretCiphertext String
+  secretPrefix String
+  description String?
+  headers Json @default("{}")
+  maxAttempts Int @default(8)
+  timeoutMs Int @default(10000)
+  createdByUserId String
+  deliveries WebhookDelivery[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId,status])
+  @@index([applicationId,status])
+}
+model WebhookEvent {
+  id String @id @default(cuid())
+  organizationId String
+  type String
+  subjectType String?
+  subjectId String?
+  payload Json
+  status WebhookEventStatus @default(PENDING)
+  correlationId String
+  occurredAt DateTime @default(now())
+  dispatchedAt DateTime?
+  deliveries WebhookDelivery[]
+  createdAt DateTime @default(now())
+  @@index([organizationId,type,occurredAt])
+  @@index([organizationId,status,createdAt])
+  @@index([correlationId])
+}
+model WebhookDelivery {
+  id String @id @default(cuid())
+  organizationId String
+  subscriptionId String
+  subscription WebhookSubscription @relation(fields:[subscriptionId],references:[id],onDelete:Cascade)
+  eventId String
+  event WebhookEvent @relation(fields:[eventId],references:[id],onDelete:Cascade)
+  status WebhookDeliveryStatus @default(PENDING)
+  attemptCount Int @default(0)
+  nextAttemptAt DateTime @default(now())
+  lastAttemptAt DateTime?
+  deliveredAt DateTime?
+  responseStatus Int?
+  responseBodySnippet String?
+  responseHeaders Json?
+  lastError String?
+  durationMs Int?
+  deadLetteredAt DateTime?
+  replayedFromId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([subscriptionId,eventId])
+  @@index([organizationId,status,nextAttemptAt])
+  @@index([subscriptionId,createdAt])
+  @@index([eventId])
+}
+
+enum DataConnectorDomain {
+  HRIS
+  CRM
+  ERP
+  PROJECT
+  COLLABORATION
+  PRODUCTIVITY
+  CUSTOM
+}
+enum DataConnectionStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+  DISABLED
+}
+enum DataSyncDirection {
+  INBOUND
+  OUTBOUND
+  BIDIRECTIONAL
+}
+enum DataSyncTrigger {
+  MANUAL
+  SCHEDULED
+  EVENT
+}
+enum DataSyncRunStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  PARTIAL
+  FAILED
+  CANCELLED
+}
+enum DataSyncRecordStatus {
+  PENDING
+  CREATED
+  UPDATED
+  SKIPPED
+  FAILED
+  CONFLICT
+}
+enum DataConflictPolicy {
+  SOURCE_WINS
+  TARGET_WINS
+  LATEST_WINS
+  MANUAL
+}
+enum DataConflictStatus {
+  OPEN
+  RESOLVED
+  IGNORED
+}
+
+model DataConnectorDefinition {
+  id String @id @default(cuid())
+  key String @unique
+  name String
+  domain DataConnectorDomain
+  description String?
+  capabilities String[]
+  supportedObjects String[]
+  configurationSchema Json?
+  active Boolean @default(true)
+  connections DataConnection[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DataConnection {
+  id String @id @default(cuid())
+  organizationId String
+  connectorDefinitionId String
+  connectorDefinition DataConnectorDefinition @relation(fields: [connectorDefinitionId], references: [id], onDelete: Restrict)
+  name String
+  status DataConnectionStatus @default(DRAFT)
+  baseUrl String?
+  tenantKey String?
+  encryptedCredential String?
+  credentialFingerprint String?
+  credentialExpiresAt DateTime?
+  settings Json?
+  lastHealthCheckAt DateTime?
+  lastSuccessfulSyncAt DateTime?
+  syncDefinitions DataSyncDefinition[]
+  runs DataSyncRun[]
+  createdByUserId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, status])
+}
+
+model DataSyncDefinition {
+  id String @id @default(cuid())
+  organizationId String
+  connectionId String
+  connection DataConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  name String
+  sourceObject String
+  targetEntity String
+  direction DataSyncDirection @default(INBOUND)
+  trigger DataSyncTrigger @default(MANUAL)
+  scheduleCron String?
+  conflictPolicy DataConflictPolicy @default(MANUAL)
+  enabled Boolean @default(true)
+  filter Json?
+  checkpoint Json?
+  mappings DataFieldMapping[]
+  runs DataSyncRun[]
+  conflicts DataSyncConflict[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([connectionId, name])
+  @@index([organizationId, enabled])
+}
+
+model DataFieldMapping {
+  id String @id @default(cuid())
+  syncDefinitionId String
+  syncDefinition DataSyncDefinition @relation(fields: [syncDefinitionId], references: [id], onDelete: Cascade)
+  sourceField String
+  targetField String
+  transform Json?
+  defaultValue Json?
+  required Boolean @default(false)
+  sensitive Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([syncDefinitionId, sourceField, targetField])
+}
+
+model DataSyncRun {
+  id String @id @default(cuid())
+  organizationId String
+  connectionId String
+  connection DataConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  syncDefinitionId String
+  syncDefinition DataSyncDefinition @relation(fields: [syncDefinitionId], references: [id], onDelete: Cascade)
+  status DataSyncRunStatus @default(PENDING)
+  trigger DataSyncTrigger
+  correlationId String @default(cuid())
+  checkpointBefore Json?
+  checkpointAfter Json?
+  recordsRead Int @default(0)
+  recordsCreated Int @default(0)
+  recordsUpdated Int @default(0)
+  recordsSkipped Int @default(0)
+  recordsFailed Int @default(0)
+  conflictsFound Int @default(0)
+  errorMessage String?
+  startedAt DateTime?
+  completedAt DateTime?
+  triggeredByUserId String?
+  records DataSyncRecord[]
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+  @@index([syncDefinitionId, createdAt])
+}
+
+model DataSyncRecord {
+  id String @id @default(cuid())
+  organizationId String
+  syncRunId String
+  syncRun DataSyncRun @relation(fields: [syncRunId], references: [id], onDelete: Cascade)
+  externalId String
+  internalEntityId String?
+  status DataSyncRecordStatus @default(PENDING)
+  sourceChecksum String?
+  targetChecksum String?
+  sourceUpdatedAt DateTime?
+  targetUpdatedAt DateTime?
+  payloadSummary Json?
+  errorMessage String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([syncRunId, externalId])
+  @@index([organizationId, status, updatedAt])
+}
+
+model DataSyncConflict {
+  id String @id @default(cuid())
+  organizationId String
+  syncDefinitionId String
+  syncDefinition DataSyncDefinition @relation(fields: [syncDefinitionId], references: [id], onDelete: Cascade)
+  externalId String
+  internalEntityId String?
+  field String
+  sourceValue Json?
+  targetValue Json?
+  policy DataConflictPolicy
+  status DataConflictStatus @default(OPEN)
+  resolution DataConflictPolicy?
+  resolvedByUserId String?
+  resolvedAt DateTime?
+  notes String?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+}
+
+
+enum IntegrationAutomationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum IntegrationAutomationTrigger {
+  MANUAL
+  SCHEDULED
+  EVENT
+  WEBHOOK
+  DATA_SYNC
+}
+enum IntegrationAutomationNodeType {
+  TRIGGER
+  CONDITION
+  ACTION
+  DELAY
+  APPROVAL
+  CONNECTOR
+  WEBHOOK
+}
+enum IntegrationAutomationRunStatus {
+  PENDING
+  RUNNING
+  WAITING_APPROVAL
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+enum IntegrationAutomationStepStatus {
+  PENDING
+  RUNNING
+  WAITING_APPROVAL
+  SUCCEEDED
+  FAILED
+  RETRY_SCHEDULED
+  SKIPPED
+  CANCELLED
+}
+enum IntegrationAutomationApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model IntegrationAutomation {
+  id String @id @default(cuid())
+  organizationId String
+  name String
+  description String?
+  status IntegrationAutomationStatus @default(DRAFT)
+  triggerType IntegrationAutomationTrigger
+  triggerConfig Json?
+  enabled Boolean @default(true)
+  version Int @default(0)
+  tags String[] @default([])
+  createdByUserId String
+  publishedByUserId String?
+  publishedAt DateTime?
+  nodes IntegrationAutomationNode[]
+  edges IntegrationAutomationEdge[]
+  runs IntegrationAutomationRun[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name, version])
+  @@index([organizationId, status, enabled])
+}
+model IntegrationAutomationNode {
+  id String @id @default(cuid())
+  organizationId String
+  automationId String
+  automation IntegrationAutomation @relation(fields:[automationId],references:[id],onDelete:Cascade)
+  key String
+  name String
+  type IntegrationAutomationNodeType
+  config Json?
+  maxAttempts Int @default(3)
+  timeoutSeconds Int @default(300)
+  stepRuns IntegrationAutomationStepRun[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([automationId, key])
+  @@index([organizationId, type])
+}
+model IntegrationAutomationEdge {
+  id String @id @default(cuid())
+  organizationId String
+  automationId String
+  automation IntegrationAutomation @relation(fields:[automationId],references:[id],onDelete:Cascade)
+  fromNodeKey String
+  toNodeKey String
+  outcome String @default("SUCCESS")
+  condition Json?
+  createdAt DateTime @default(now())
+  @@unique([automationId, fromNodeKey, toNodeKey, outcome])
+}
+model IntegrationAutomationRun {
+  id String @id @default(cuid())
+  organizationId String
+  automationId String
+  automation IntegrationAutomation @relation(fields:[automationId],references:[id],onDelete:Cascade)
+  status IntegrationAutomationRunStatus @default(PENDING)
+  triggerType IntegrationAutomationTrigger
+  correlationId String @default(cuid())
+  idempotencyKey String?
+  input Json?
+  output Json?
+  errorMessage String?
+  triggeredByUserId String?
+  startedAt DateTime?
+  completedAt DateTime?
+  steps IntegrationAutomationStepRun[]
+  approvals IntegrationAutomationApproval[]
+  createdAt DateTime @default(now())
+  @@unique([organizationId, automationId, idempotencyKey])
+  @@index([organizationId, status, createdAt])
+}
+model IntegrationAutomationStepRun {
+  id String @id @default(cuid())
+  organizationId String
+  runId String
+  run IntegrationAutomationRun @relation(fields:[runId],references:[id],onDelete:Cascade)
+  nodeId String
+  node IntegrationAutomationNode @relation(fields:[nodeId],references:[id],onDelete:Restrict)
+  status IntegrationAutomationStepStatus @default(PENDING)
+  attempt Int @default(1)
+  input Json?
+  output Json?
+  errorMessage String?
+  startedAt DateTime?
+  completedAt DateTime?
+  nextAttemptAt DateTime?
+  approvals IntegrationAutomationApproval[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, status, nextAttemptAt])
+  @@index([runId, createdAt])
+}
+model IntegrationAutomationApproval {
+  id String @id @default(cuid())
+  organizationId String
+  runId String
+  run IntegrationAutomationRun @relation(fields:[runId],references:[id],onDelete:Cascade)
+  stepId String
+  step IntegrationAutomationStepRun @relation(fields:[stepId],references:[id],onDelete:Cascade)
+  status IntegrationAutomationApprovalStatus @default(PENDING)
+  requestedByUserId String?
+  approverUserId String?
+  decidedByUserId String?
+  decisionNotes String?
+  decidedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+}
+
+enum IntegrationPublisherStatus {
+  PENDING
+  VERIFIED
+  SUSPENDED
+  REJECTED
+}
+enum IntegrationListingType {
+  CONNECTOR
+  AUTOMATION_TEMPLATE
+  WEBHOOK_APP
+  API_APP
+}
+enum IntegrationListingVisibility {
+  PRIVATE
+  ORGANIZATION
+  PUBLIC
+}
+enum IntegrationListingStatus {
+  DRAFT
+  IN_REVIEW
+  CHANGES_REQUESTED
+  PUBLISHED
+  SUSPENDED
+  ARCHIVED
+}
+enum IntegrationReviewStatus {
+  PENDING
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+enum IntegrationInstallationStatus {
+  ACTIVE
+  PAUSED
+  ERROR
+  UNINSTALLED
+}
+enum IntegrationCertificationStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+enum IntegrationIncidentStatus {
+  OPEN
+  INVESTIGATING
+  MITIGATED
+  RESOLVED
+}
+
+model IntegrationPublisher {
+  id String @id @default(cuid())
+  organizationId String
+  ownerUserId String
+  name String
+  description String?
+  websiteUrl String?
+  status IntegrationPublisherStatus @default(PENDING)
+  verifiedByUserId String?
+  verifiedAt DateTime?
+  listings IntegrationMarketplaceListing[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, name])
+  @@index([organizationId, status])
+}
+model IntegrationMarketplaceListing {
+  id String @id @default(cuid())
+  organizationId String
+  publisherId String
+  publisher IntegrationPublisher @relation(fields:[publisherId],references:[id],onDelete:Restrict)
+  createdByUserId String
+  name String
+  slug String
+  description String?
+  type IntegrationListingType
+  visibility IntegrationListingVisibility @default(ORGANIZATION)
+  status IntegrationListingStatus @default(DRAFT)
+  version String
+  categories String[] @default([])
+  requiredScopes String[] @default([])
+  manifest Json?
+  submittedAt DateTime?
+  publishedAt DateTime?
+  reviews IntegrationMarketplaceReview[]
+  installations IntegrationInstallation[]
+  ratings IntegrationMarketplaceRating[]
+  certifications IntegrationCertification[]
+  incidents IntegrationMarketplaceIncident[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, slug, version])
+  @@index([organizationId, status, visibility])
+}
+model IntegrationMarketplaceReview {
+  id String @id @default(cuid())
+  organizationId String
+  listingId String
+  listing IntegrationMarketplaceListing @relation(fields:[listingId],references:[id],onDelete:Cascade)
+  requestedByUserId String
+  reviewedByUserId String?
+  status IntegrationReviewStatus @default(PENDING)
+  submissionNotes String?
+  reviewNotes String?
+  findings String[] @default([])
+  reviewedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, createdAt])
+}
+model IntegrationInstallation {
+  id String @id @default(cuid())
+  organizationId String
+  listingId String
+  listing IntegrationMarketplaceListing @relation(fields:[listingId],references:[id],onDelete:Restrict)
+  installedByUserId String
+  updatedByUserId String
+  status IntegrationInstallationStatus @default(ACTIVE)
+  installedVersion String
+  configuration Json?
+  autoUpdate Boolean @default(true)
+  lastHealthAt DateTime?
+  lastError String?
+  uninstalledAt DateTime?
+  incidents IntegrationMarketplaceIncident[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, listingId])
+  @@index([organizationId, status, updatedAt])
+}
+model IntegrationMarketplaceRating {
+  id String @id @default(cuid())
+  organizationId String
+  listingId String
+  listing IntegrationMarketplaceListing @relation(fields:[listingId],references:[id],onDelete:Cascade)
+  userId String
+  rating Int
+  title String
+  body String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([organizationId, listingId, userId])
+  @@index([listingId, rating])
+}
+model IntegrationCertification {
+  id String @id @default(cuid())
+  organizationId String
+  listingId String
+  listing IntegrationMarketplaceListing @relation(fields:[listingId],references:[id],onDelete:Cascade)
+  certifiedByUserId String
+  type String
+  status IntegrationCertificationStatus @default(ACTIVE)
+  validFrom DateTime
+  validUntil DateTime?
+  evidence Json?
+  createdAt DateTime @default(now())
+  @@index([organizationId, status, validUntil])
+}
+model IntegrationMarketplaceIncident {
+  id String @id @default(cuid())
+  organizationId String
+  listingId String
+  listing IntegrationMarketplaceListing @relation(fields:[listingId],references:[id],onDelete:Restrict)
+  installationId String
+  installation IntegrationInstallation @relation(fields:[installationId],references:[id],onDelete:Cascade)
+  reportedByUserId String
+  resolvedByUserId String?
+  title String
+  description String?
+  severity String
+  status IntegrationIncidentStatus @default(OPEN)
+  resolution String?
+  resolvedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([organizationId, status, severity, createdAt])
+}

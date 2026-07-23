@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { AIPlatformController } from './ai-platform.controller'; import { AIPlatformService } from './ai-platform.service'; import { OpenAICompatibleAdapter } from './providers/openai-compatible.adapter';
+@Module({controllers:[AIPlatformController],providers:[AIPlatformService,OpenAICompatibleAdapter],exports:[AIPlatformService]}) export class AIPlatformModule {}

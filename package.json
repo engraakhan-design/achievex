@@ -1,0 +1,44 @@
+{
+  "name": "achievex",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "npm run db:generate && turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml,css}\"",
+    "db:generate": "prisma generate --schema prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "db:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
+    "db:studio": "prisma studio --schema prisma/schema.prisma",
+    "hostinger:build": "npm run build",
+    "hostinger:start": "node hostinger-server.js",
+    "db:validate": "prisma validate --schema prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "prettier": "latest",
+    "prisma": "6.16.3",
+    "turbo": "^2.10.3",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "npm@10.9.2",
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "latest",
+    "next": "latest",
+    "@nestjs/common": "^11.1.27",
+    "@nestjs/core": "^11.1.27",
+    "@nestjs/platform-express": "^11.1.27",
+    "@nestjs/swagger": "latest",
+    "reflect-metadata": "latest",
+    "rxjs": "latest"
+  }
+}

@@ -1,0 +1,4 @@
+import { IsArray, IsIn, IsInt, IsObject, IsOptional, IsString, Max, Min } from 'class-validator';
+export class CreateKnowledgeSourceDto { @IsString() name!:string; @IsString() type!:string; @IsOptional() @IsObject() configuration?:Record<string,unknown>; }
+export class IndexKnowledgeDocumentDto { @IsString() sourceId!:string; @IsString() externalId!:string; @IsString() title!:string; @IsString() content!:string; @IsOptional() @IsString() documentType?:string; @IsOptional() @IsIn(['ORGANIZATION','RESTRICTED','PRIVATE']) visibility?:string; @IsOptional() @IsArray() allowedUserIds?:string[]; @IsOptional() @IsObject() metadata?:Record<string,unknown>; }
+export class KnowledgeSearchDto { @IsString() query!:string; @IsOptional() @IsInt() @Min(1) @Max(20) topK?:number; @IsOptional() @IsArray() sourceTypes?:string[]; }

@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { RealtimeCollaborationController } from './realtime-collaboration.controller'; import { RealtimeCollaborationGateway } from './realtime-collaboration.gateway'; import { RealtimeCollaborationService } from './realtime-collaboration.service';
+@Module({controllers:[RealtimeCollaborationController],providers:[RealtimeCollaborationService,RealtimeCollaborationGateway],exports:[RealtimeCollaborationService]}) export class RealtimeCollaborationModule {}

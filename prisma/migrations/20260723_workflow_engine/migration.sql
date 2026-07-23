@@ -1,0 +1,43 @@
+CREATE TYPE "WorkflowDefinitionStatus" AS ENUM ('DRAFT','PUBLISHED','ARCHIVED');
+CREATE TYPE "WorkflowInstanceStatus" AS ENUM ('RUNNING','WAITING','COMPLETED','CANCELLED','FAILED','EXPIRED');
+CREATE TYPE "WorkflowStepType" AS ENUM ('START','USER_TASK','APPROVAL','DECISION','NOTIFICATION','AI_ACTION','WEBHOOK','END');
+CREATE TYPE "WorkflowTaskStatus" AS ENUM ('OPEN','COMPLETED','CANCELLED');
+CREATE TYPE "WorkflowHistoryType" AS ENUM ('INSTANCE_STARTED','STEP_ENTERED','TASK_CREATED','TASK_COMPLETED','TRANSITIONED','INSTANCE_COMPLETED','INSTANCE_CANCELLED','INSTANCE_FAILED');
+
+CREATE TABLE "WorkflowDefinition" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"key" TEXT NOT NULL,"name" TEXT NOT NULL,"description" TEXT,"status" "WorkflowDefinitionStatus" NOT NULL DEFAULT 'DRAFT',"currentVersion" INTEGER NOT NULL DEFAULT 0,"createdById" TEXT NOT NULL,"updatedById" TEXT NOT NULL,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL);
+CREATE TABLE "WorkflowVersion" ("id" TEXT PRIMARY KEY,"definitionId" TEXT NOT NULL,"version" INTEGER NOT NULL,"name" TEXT NOT NULL,"description" TEXT,"isPublished" BOOLEAN NOT NULL DEFAULT false,"publishedAt" TIMESTAMP(3),"publishedById" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE "WorkflowStep" ("id" TEXT PRIMARY KEY,"versionId" TEXT NOT NULL,"key" TEXT NOT NULL,"name" TEXT NOT NULL,"type" "WorkflowStepType" NOT NULL,"config" JSONB NOT NULL DEFAULT '{}',"sortOrder" INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE "WorkflowTransition" ("id" TEXT PRIMARY KEY,"versionId" TEXT NOT NULL,"fromStepId" TEXT NOT NULL,"toStepId" TEXT NOT NULL,"name" TEXT,"condition" JSONB NOT NULL DEFAULT '{}',"priority" INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE "WorkflowInstance" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"definitionId" TEXT NOT NULL,"versionId" TEXT NOT NULL,"status" "WorkflowInstanceStatus" NOT NULL DEFAULT 'RUNNING',"businessKey" TEXT,"entityType" TEXT,"entityId" TEXT,"activeStepId" TEXT,"variables" JSONB NOT NULL DEFAULT '{}',"startedById" TEXT NOT NULL,"startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"completedAt" TIMESTAMP(3),"cancelledAt" TIMESTAMP(3));
+CREATE TABLE "WorkflowTask" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"instanceId" TEXT NOT NULL,"stepId" TEXT NOT NULL,"status" "WorkflowTaskStatus" NOT NULL DEFAULT 'OPEN',"title" TEXT NOT NULL,"description" TEXT,"assigneeType" TEXT,"assigneeId" TEXT,"candidateRole" TEXT,"dueAt" TIMESTAMP(3),"outcome" TEXT,"payload" JSONB NOT NULL DEFAULT '{}',"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"completedAt" TIMESTAMP(3),"completedById" TEXT);
+CREATE TABLE "WorkflowHistory" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"instanceId" TEXT NOT NULL,"type" "WorkflowHistoryType" NOT NULL,"stepId" TEXT,"actorId" TEXT,"message" TEXT NOT NULL,"data" JSONB NOT NULL DEFAULT '{}',"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+
+CREATE UNIQUE INDEX "WorkflowDefinition_organizationId_key_key" ON "WorkflowDefinition"("organizationId","key");
+CREATE INDEX "WorkflowDefinition_organizationId_status_idx" ON "WorkflowDefinition"("organizationId","status");
+CREATE UNIQUE INDEX "WorkflowVersion_definitionId_version_key" ON "WorkflowVersion"("definitionId","version");
+CREATE INDEX "WorkflowVersion_definitionId_isPublished_idx" ON "WorkflowVersion"("definitionId","isPublished");
+CREATE UNIQUE INDEX "WorkflowStep_versionId_key_key" ON "WorkflowStep"("versionId","key");
+CREATE INDEX "WorkflowStep_versionId_sortOrder_idx" ON "WorkflowStep"("versionId","sortOrder");
+CREATE INDEX "WorkflowTransition_versionId_fromStepId_priority_idx" ON "WorkflowTransition"("versionId","fromStepId","priority");
+CREATE INDEX "WorkflowInstance_organizationId_status_idx" ON "WorkflowInstance"("organizationId","status");
+CREATE INDEX "WorkflowInstance_organizationId_entityType_entityId_idx" ON "WorkflowInstance"("organizationId","entityType","entityId");
+CREATE INDEX "WorkflowInstance_definitionId_versionId_idx" ON "WorkflowInstance"("definitionId","versionId");
+CREATE INDEX "WorkflowTask_organizationId_status_assigneeId_idx" ON "WorkflowTask"("organizationId","status","assigneeId");
+CREATE INDEX "WorkflowTask_instanceId_status_idx" ON "WorkflowTask"("instanceId","status");
+CREATE INDEX "WorkflowHistory_organizationId_instanceId_createdAt_idx" ON "WorkflowHistory"("organizationId","instanceId","createdAt");
+
+ALTER TABLE "WorkflowDefinition" ADD CONSTRAINT "WorkflowDefinition_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowVersion" ADD CONSTRAINT "WorkflowVersion_definitionId_fkey" FOREIGN KEY ("definitionId") REFERENCES "WorkflowDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowStep" ADD CONSTRAINT "WorkflowStep_versionId_fkey" FOREIGN KEY ("versionId") REFERENCES "WorkflowVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTransition" ADD CONSTRAINT "WorkflowTransition_versionId_fkey" FOREIGN KEY ("versionId") REFERENCES "WorkflowVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTransition" ADD CONSTRAINT "WorkflowTransition_fromStepId_fkey" FOREIGN KEY ("fromStepId") REFERENCES "WorkflowStep"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTransition" ADD CONSTRAINT "WorkflowTransition_toStepId_fkey" FOREIGN KEY ("toStepId") REFERENCES "WorkflowStep"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowInstance" ADD CONSTRAINT "WorkflowInstance_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowInstance" ADD CONSTRAINT "WorkflowInstance_definitionId_fkey" FOREIGN KEY ("definitionId") REFERENCES "WorkflowDefinition"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WorkflowInstance" ADD CONSTRAINT "WorkflowInstance_versionId_fkey" FOREIGN KEY ("versionId") REFERENCES "WorkflowVersion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WorkflowInstance" ADD CONSTRAINT "WorkflowInstance_activeStepId_fkey" FOREIGN KEY ("activeStepId") REFERENCES "WorkflowStep"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTask" ADD CONSTRAINT "WorkflowTask_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTask" ADD CONSTRAINT "WorkflowTask_instanceId_fkey" FOREIGN KEY ("instanceId") REFERENCES "WorkflowInstance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowTask" ADD CONSTRAINT "WorkflowTask_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "WorkflowStep"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WorkflowHistory" ADD CONSTRAINT "WorkflowHistory_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "WorkflowHistory" ADD CONSTRAINT "WorkflowHistory_instanceId_fkey" FOREIGN KEY ("instanceId") REFERENCES "WorkflowInstance"("id") ON DELETE CASCADE ON UPDATE CASCADE;

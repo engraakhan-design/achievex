@@ -1,0 +1,1 @@
+import { IdentityGovernanceService } from './identity-governance.service'; describe('IdentityGovernanceService',()=>{it('constructs',()=>expect(new IdentityGovernanceService({} as any)).toBeDefined())});

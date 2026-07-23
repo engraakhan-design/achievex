@@ -1,0 +1,15 @@
+{
+  "name": "@achievex/types",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "echo types lint",
+    "test": "echo types test"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

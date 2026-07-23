@@ -1,0 +1,1 @@
+import { WebhookPlatformService } from './webhook-platform.service'; describe('WebhookPlatformService',()=>{it('is defined',()=>expect(WebhookPlatformService).toBeDefined())})

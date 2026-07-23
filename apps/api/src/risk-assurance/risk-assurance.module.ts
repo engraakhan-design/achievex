@@ -1,0 +1,1 @@
+import { Module } from '@nestjs/common'; import { RiskAssuranceController } from './risk-assurance.controller'; import { RiskAssuranceService } from './risk-assurance.service'; @Module({controllers:[RiskAssuranceController],providers:[RiskAssuranceService],exports:[RiskAssuranceService]}) export class RiskAssuranceModule {}

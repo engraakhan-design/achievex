@@ -1,0 +1,44 @@
+name: AchieveX CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: achievex
+          POSTGRES_PASSWORD: achievex_ci
+          POSTGRES_DB: achievex
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U achievex -d achievex"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://achievex:achievex_ci@localhost:5432/achievex?schema=public
+      JWT_ACCESS_SECRET: ci-only-secret-that-is-at-least-32-characters
+      TENANT_SECRET_KEY: ci-only-tenant-secret-that-is-at-least-32-characters
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - run: npm run db:generate
+      - run: npx prisma validate --schema prisma/schema.prisma
+      - run: npm run db:deploy
+      - run: npm run build
+      - run: npm test
+      - run: docker compose --env-file .env.production.example -f docker-compose.production.yml config

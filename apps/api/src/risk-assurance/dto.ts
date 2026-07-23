@@ -1,0 +1,9 @@
+import { IsArray, IsBoolean, IsEnum, IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+
+export enum RiskLevelDto { VERY_LOW='VERY_LOW', LOW='LOW', MEDIUM='MEDIUM', HIGH='HIGH', CRITICAL='CRITICAL' }
+export class CreateRiskDto { @IsString() title!: string; @IsOptional() @IsString() description?: string; @IsString() category!: string; @IsOptional() @IsString() ownerUserId?: string; @IsInt() @Min(1) @Max(5) likelihood!: number; @IsInt() @Min(1) @Max(5) impact!: number; @IsOptional() @IsNumber() controlEffectiveness?: number; @IsOptional() @IsString() reviewAt?: string; }
+export class AssessRiskDto { @IsInt() @Min(1) @Max(5) likelihood!: number; @IsInt() @Min(1) @Max(5) impact!: number; @IsNumber() @Min(0) @Max(1) controlEffectiveness!: number; @IsOptional() @IsString() rationale?: string; }
+export class CreateControlTestDto { @IsString() controlId!: string; @IsEnum(['MANUAL','AUTOMATED','SAMPLING','CONTINUOUS']) type!: 'MANUAL'|'AUTOMATED'|'SAMPLING'|'CONTINUOUS'; @IsOptional() @IsString() scheduledAt?: string; }
+export class CompleteControlTestDto { @IsEnum(['PASSED','FAILED','PARTIAL']) result!: 'PASSED'|'FAILED'|'PARTIAL'; @IsOptional() @IsString() notes?: string; @IsOptional() @IsArray() evidenceIds?: string[]; }
+export class CreateFindingDto { @IsString() title!: string; @IsOptional() @IsString() description?: string; @IsEnum(['INFORMATIONAL','LOW','MEDIUM','HIGH','CRITICAL']) severity!: string; @IsOptional() @IsString() controlId?: string; @IsOptional() @IsString() riskId?: string; @IsOptional() @IsString() ownerUserId?: string; @IsOptional() @IsString() dueAt?: string; }
+export class CreateCorrectiveActionDto { @IsString() findingId!: string; @IsString() title!: string; @IsOptional() @IsString() description?: string; @IsOptional() @IsString() ownerUserId?: string; @IsOptional() @IsString() dueAt?: string; }

@@ -1,0 +1,2 @@
+import {evaluateStage} from './approval-strategy';
+describe('approval strategies',()=>{it('approves majority',()=>expect(evaluateStage({strategy:'MAJORITY',assignments:[{status:'APPROVED'},{status:'APPROVED'},{status:'PENDING'}]})).toBe('APPROVED'));it('requires consensus',()=>expect(evaluateStage({strategy:'CONSENSUS',assignments:[{status:'APPROVED'},{status:'PENDING'}]})).toBe('PENDING'));it('rejects immediately',()=>expect(evaluateStage({strategy:'PARALLEL',assignments:[{status:'APPROVED'},{status:'REJECTED'}]})).toBe('REJECTED'));});

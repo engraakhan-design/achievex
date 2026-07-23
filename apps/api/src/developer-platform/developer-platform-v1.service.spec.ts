@@ -1,0 +1,2 @@
+import { DeveloperPlatformV1Service } from './developer-platform-v1.service';
+describe('DeveloperPlatformV1Service security invariants',()=>{it('publishes a v1 OpenAPI contract without exposing secrets',()=>{const service=new DeveloperPlatformV1Service({} as any);const manifest=service.manifest();expect(manifest.info.version).toBe('1.0.0');expect(JSON.stringify(manifest)).not.toContain('secretHash')})});

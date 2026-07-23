@@ -1,0 +1,2 @@
+import { AdminShell } from '../../../../components/admin-shell';
+export default function Page(){return <AdminShell title="Integration marketplace" subtitle="Published connector definitions and governed semantic versions."><section className="card"><h2>Connector SDK</h2><p>Future Jira, Workday, Slack and identity connectors implement one contract for authentication, validation, pull, push, subscriptions, webhook handling and health checks.</p></section></AdminShell>}

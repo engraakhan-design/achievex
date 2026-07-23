@@ -1,0 +1,9 @@
+import { Body, Controller, Get, Post, Query } from '@nestjs/common'; import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'; import { CurrentUser } from '../auth/decorators/current-user.decorator'; import { Permissions } from '../auth/decorators/permissions.decorator'; import { AuthenticatedUser } from '../auth/auth.types'; import { CreateKnowledgeSourceDto, IndexKnowledgeDocumentDto, KnowledgeSearchDto } from './dto'; import { KnowledgePlatformService } from './knowledge-platform.service';
+@ApiTags('Knowledge Platform') @ApiBearerAuth() @Controller('knowledge') export class KnowledgePlatformController {constructor(private readonly s:KnowledgePlatformService){}
+@Get('sources') @Permissions('knowledge.search') sources(@CurrentUser()u:AuthenticatedUser){return this.s.listSources(u.organizationId)}
+@Post('sources') @Permissions('knowledge.source.manage') create(@CurrentUser()u:AuthenticatedUser,@Body()d:CreateKnowledgeSourceDto){return this.s.createSource(u.organizationId,d)}
+@Get('documents') @Permissions('knowledge.search') documents(@CurrentUser()u:AuthenticatedUser){return this.s.listDocuments(u.organizationId)}
+@Post('index') @Permissions('knowledge.index.manage') index(@CurrentUser()u:AuthenticatedUser,@Body()d:IndexKnowledgeDocumentDto){return this.s.index(u.organizationId,u.sub,d)}
+@Get('search') @Permissions('knowledge.search') search(@CurrentUser()u:AuthenticatedUser,@Query('q')q:string,@Query('topK')topK?:string){return this.s.search(u.organizationId,u.sub,{query:q,topK:topK?Number(topK):undefined})}
+@Post('query') @Permissions('knowledge.query') query(@CurrentUser()u:AuthenticatedUser,@Body()d:KnowledgeSearchDto){return this.s.context(u.organizationId,u.sub,d.query,d.topK)}
+@Get('analytics') @Permissions('knowledge.analytics.read') analytics(@CurrentUser()u:AuthenticatedUser){return this.s.analytics(u.organizationId)}}

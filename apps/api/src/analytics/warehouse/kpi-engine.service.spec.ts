@@ -1,0 +1,2 @@
+import { KpiEngineService } from './kpi-engine.service';
+describe('KpiEngineService',()=>{const e=new KpiEngineService();it('calculates percentage',()=>expect(e.calculate('PERCENTAGE',{numerator:'done',denominator:'total'},{done:8,total:10})).toBe(80));it('calculates weighted score',()=>expect(e.calculate('WEIGHTED_SCORE',{items:[{field:'a',weight:.4},{field:'b',weight:.6}]},{a:50,b:100})).toBe(80));it('does not execute arbitrary expressions',()=>expect(()=>e.calculate('FORMULA',{op:'eval',args:[]},{})).toThrow())});

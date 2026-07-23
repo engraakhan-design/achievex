@@ -1,0 +1,10 @@
+import { Body, Controller, Get, Param, Post } from '@nestjs/common'; import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'; import { CurrentUser } from '../auth/decorators/current-user.decorator'; import { Permissions } from '../auth/decorators/permissions.decorator'; import { AuthenticatedUser } from '../auth/auth.types'; import { CopilotService } from './copilot.service'; import { CopilotFeedbackDto, CreateConversationDto, CreateSuggestedActionDto, SendCopilotMessageDto } from './dto';
+@ApiTags('Enterprise Copilot') @ApiBearerAuth() @Controller('copilot') export class CopilotController {constructor(private readonly s:CopilotService){}
+@Get('conversations') @Permissions('ai.copilot.use') list(@CurrentUser()u:AuthenticatedUser){return this.s.list(u.organizationId,u.sub)}
+@Post('conversations') @Permissions('ai.copilot.use') create(@CurrentUser()u:AuthenticatedUser,@Body()d:CreateConversationDto){return this.s.create(u.organizationId,u.sub,d)}
+@Get('conversations/:id') @Permissions('ai.copilot.use') get(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string){return this.s.get(u.organizationId,u.sub,id)}
+@Post('conversations/:id/messages') @Permissions('ai.copilot.use') send(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string,@Body()d:SendCopilotMessageDto){return this.s.send(u.organizationId,u.sub,id,d)}
+@Post('messages/:id/feedback') @Permissions('ai.copilot.use') feedback(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string,@Body()d:CopilotFeedbackDto){return this.s.feedback(u.organizationId,u.sub,id,d)}
+@Post('conversations/:id/actions') @Permissions('ai.copilot.action.suggest') suggest(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string,@Body()d:CreateSuggestedActionDto){return this.s.suggest(u.organizationId,u.sub,id,d)}
+@Post('actions/:id/approve') @Permissions('ai.copilot.action.approve') approve(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string){return this.s.decide(u.organizationId,u.sub,id,'APPROVED')}
+@Post('actions/:id/reject') @Permissions('ai.copilot.action.approve') reject(@CurrentUser()u:AuthenticatedUser,@Param('id')id:string){return this.s.decide(u.organizationId,u.sub,id,'REJECTED')}}

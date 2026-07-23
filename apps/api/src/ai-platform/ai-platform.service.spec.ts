@@ -1,0 +1,2 @@
+import { OpenAICompatibleAdapter } from './providers/openai-compatible.adapter';
+describe('OpenAICompatibleAdapter',()=>{it('returns deterministic foundation response and accounting metadata',async()=>{const adapter=new OpenAICompatibleAdapter();const result=await adapter.execute({}, {model:'test',correlationId:'c1',messages:[{role:'user',content:'Draft an objective'}]});expect(result.content).toContain('Draft an objective');expect(result.promptTokens).toBeGreaterThan(0);expect(adapter.estimateCost(1000000,1000000,{inputPerMillion:1,outputPerMillion:2})).toBe(3)})})

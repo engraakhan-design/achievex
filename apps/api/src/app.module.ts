@@ -1,0 +1,42 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { AuditModule } from './audit/audit.module';
+import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { DepartmentsModule } from './departments/departments.module';
+import { OrganizationsModule } from './organizations/organizations.module';
+import { RolesModule } from './roles/roles.module';
+import { TeamsModule } from './teams/teams.module';
+import { UsersModule } from './users/users.module';
+import { OkrsModule } from './okrs/okrs.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { EventsModule } from './events/events.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { IntegrationsModule } from './integrations/integrations.module';
+import { RealtimeModule } from './realtime/realtime.module';
+import { EnterpriseModule } from './enterprise/enterprise.module';
+import { AiModule } from './ai/ai.module';
+import { ExecutionModule } from './execution/execution.module';
+import { ResourceManagementModule } from './resource-management/resource-management.module';
+import { WorkflowModule } from './workflow/workflow.module';
+import { DeveloperPlatformModule } from './developer-platform/developer-platform.module';
+import { GovernanceModule } from './governance/governance.module';
+import { RiskAssuranceModule } from './risk-assurance/risk-assurance.module';
+import { IdentityGovernanceModule } from './identity-governance/identity-governance.module';
+import { AIPlatformModule } from './ai-platform/ai-platform.module';
+import { CopilotModule } from './copilot/copilot.module';
+import { KnowledgePlatformModule } from './knowledge-platform/knowledge-platform.module';
+import { AgentPlatformModule } from './agent-platform/agent-platform.module';
+import { CollaborationModule } from './collaboration/collaboration.module';
+import { RealtimeCollaborationModule } from './realtime-collaboration/realtime-collaboration.module';
+import { DocumentAuthoringModule } from './document-authoring/document-authoring.module';
+import { WorkspaceCommunityModule } from './workspace-community/workspace-community.module';
+import { DigitalWorkplaceModule } from './digital-workplace/digital-workplace.module';
+import { WebhookPlatformModule } from './webhook-platform/webhook-platform.module';
+import { DataSyncPlatformModule } from './data-sync-platform/data-sync-platform.module';
+import { IntegrationAutomationModule } from './integration-automation/integration-automation.module';
+import { IntegrationMarketplaceModule } from './integration-marketplace/integration-marketplace.module';
+
+@Module({ imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', '../../.env'] }), PrismaModule, AuditModule, AuthModule, OrganizationsModule, UsersModule, DepartmentsModule, TeamsModule, RolesModule, OkrsModule, AnalyticsModule, EventsModule, NotificationsModule, IntegrationsModule, RealtimeModule, EnterpriseModule, AiModule, ExecutionModule, ResourceManagementModule, WorkflowModule, DeveloperPlatformModule, GovernanceModule, RiskAssuranceModule, IdentityGovernanceModule, AIPlatformModule, KnowledgePlatformModule, CopilotModule, AgentPlatformModule, CollaborationModule, RealtimeCollaborationModule, DocumentAuthoringModule, WorkspaceCommunityModule, DigitalWorkplaceModule, WebhookPlatformModule, DataSyncPlatformModule, IntegrationAutomationModule, IntegrationMarketplaceModule, HealthModule] })
+export class AppModule {}

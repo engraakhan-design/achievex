@@ -1,0 +1,10 @@
+'use client';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { AdminShell } from '../../components/admin-shell';
+import { api } from '../../lib/api';
+
+type Node={id:string;title:string;scope:string;status:string;progress:number;owner:string;area:string;keyResults:number;children:Node[]};
+type Alignment={cycle:{name:string};roots:Node[];unlinked:number;total:number;aligned:number};
+function Tree({nodes,depth=0}:{nodes:Node[];depth?:number}){return <div className="tree">{nodes.map(n=><div key={n.id} className="treeBranch"><Link href={`/okrs/${n.id}`} className="treeNode" style={{marginLeft:depth*28}}><div><span className="scopePill">{n.scope}</span><strong>{n.title}</strong><small>{n.area} · {n.owner} · {n.keyResults} KRs</small></div><div className="treeProgress"><span>{Math.round(n.progress)}%</span><div className="bar"><i style={{width:`${n.progress}%`}} /></div></div></Link>{n.children.length>0&&<Tree nodes={n.children} depth={depth+1}/>}</div>)}</div>}
+export default function AlignmentPage(){const [data,setData]=useState<Alignment|null>(null);const [error,setError]=useState('');useEffect(()=>{api<Alignment>('/analytics/alignment').then(setData).catch(e=>setError(e.message))},[]);return <AdminShell title="Strategy alignment" subtitle="Trace how company priorities cascade into departments, teams, and individuals">{error&&<div className="formError">{error}</div>}{data&&<><div className="metrics compactMetrics"><article><p>Objectives</p><strong>{data.total}</strong></article><article><p>Aligned</p><strong>{data.aligned}</strong></article><article><p>Unlinked</p><strong>{data.unlinked}</strong></article><article><p>Alignment rate</p><strong>{data.total?Math.round(data.aligned/data.total*100):0}%</strong></article></div><article className="panel"><div className="panelHead"><div><h2>{data.cycle.name}</h2><p>Objective hierarchy and execution progress</p></div></div>{data.roots.length?<Tree nodes={data.roots}/>:<p className="muted">No objectives in this cycle.</p>}</article></>}</AdminShell>}

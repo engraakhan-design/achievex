@@ -1,0 +1,1 @@
+describe('SLA clock calculations',()=>{it('places warning before due date',()=>{const due=new Date('2026-07-23T12:00:00Z');const warning=new Date(due.getTime()-30*60000);expect(warning.toISOString()).toBe('2026-07-23T11:30:00.000Z')});it('marks late completion as breached',()=>{expect(new Date('2026-07-23T12:01:00Z')>new Date('2026-07-23T12:00:00Z')).toBe(true)})})

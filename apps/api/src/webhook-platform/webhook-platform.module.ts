@@ -1,0 +1,1 @@
+import { Module } from '@nestjs/common'; import { WebhookPlatformController } from './webhook-platform.controller'; import { WebhookPlatformService } from './webhook-platform.service'; @Module({controllers:[WebhookPlatformController],providers:[WebhookPlatformService],exports:[WebhookPlatformService]}) export class WebhookPlatformModule {}

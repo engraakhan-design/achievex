@@ -1,0 +1,2 @@
+import { ForbiddenException } from '@nestjs/common'; import { CopilotService } from './copilot.service';
+describe('CopilotService',()=>{it('requires independent approval for suggested actions',async()=>{const db:any={copilotSuggestedAction:{findFirst:jest.fn().mockResolvedValue({id:'a',requestedByUserId:'u'})}};const service=new CopilotService(db,{} as any);await expect(service.decide('o','u','a','APPROVED')).rejects.toBeInstanceOf(ForbiddenException);});});

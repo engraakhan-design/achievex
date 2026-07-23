@@ -1,0 +1,14 @@
+CREATE TYPE "ConversationType" AS ENUM ('DIRECT','GROUP','PROJECT','OKR','INITIATIVE','RISK','AUDIT','DOCUMENT','ANNOUNCEMENT');
+CREATE TYPE "ConversationStatus" AS ENUM ('ACTIVE','ARCHIVED','CLOSED');
+CREATE TYPE "CollaborationRole" AS ENUM ('OWNER','MODERATOR','MEMBER','GUEST','HOST');
+CREATE TYPE "MessageReactionType" AS ENUM ('LIKE','LOVE','CELEBRATE','ACKNOWLEDGE','QUESTION','WATCHING');
+CREATE TABLE "Conversation" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"title" TEXT NOT NULL,"type" "ConversationType" NOT NULL,"status" "ConversationStatus" NOT NULL DEFAULT 'ACTIVE',"linkedEntityType" TEXT,"linkedEntityId" TEXT,"createdByUserId" TEXT NOT NULL,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL);
+CREATE TABLE "ConversationParticipant" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"conversationId" TEXT NOT NULL,"userId" TEXT NOT NULL,"role" "CollaborationRole" NOT NULL DEFAULT 'MEMBER',"lastReadAt" TIMESTAMP(3),"joinedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "ConversationParticipant_conversationId_fkey" FOREIGN KEY("conversationId") REFERENCES "Conversation"("id") ON DELETE CASCADE);
+CREATE TABLE "ConversationMessage" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"conversationId" TEXT NOT NULL,"authorUserId" TEXT NOT NULL,"parentMessageId" TEXT,"content" TEXT NOT NULL,"editedAt" TIMESTAMP(3),"deletedAt" TIMESTAMP(3),"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "ConversationMessage_conversationId_fkey" FOREIGN KEY("conversationId") REFERENCES "Conversation"("id") ON DELETE CASCADE);
+CREATE TABLE "MessageReaction" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"messageId" TEXT NOT NULL,"userId" TEXT NOT NULL,"type" "MessageReactionType" NOT NULL,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "MessageReaction_messageId_fkey" FOREIGN KEY("messageId") REFERENCES "ConversationMessage"("id") ON DELETE CASCADE);
+CREATE TABLE "ActivityEvent" ("id" TEXT PRIMARY KEY,"organizationId" TEXT NOT NULL,"actorUserId" TEXT,"type" TEXT NOT NULL,"entityType" TEXT NOT NULL,"entityId" TEXT NOT NULL,"payload" JSONB NOT NULL DEFAULT '{}',"audienceUserIds" TEXT[],"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE UNIQUE INDEX "ConversationParticipant_conversationId_userId_key" ON "ConversationParticipant"("conversationId","userId");
+CREATE UNIQUE INDEX "MessageReaction_messageId_userId_type_key" ON "MessageReaction"("messageId","userId","type");
+CREATE INDEX "Conversation_organizationId_status_updatedAt_idx" ON "Conversation"("organizationId","status","updatedAt");
+CREATE INDEX "ConversationMessage_organizationId_conversationId_createdAt_idx" ON "ConversationMessage"("organizationId","conversationId","createdAt");
+CREATE INDEX "ActivityEvent_organizationId_createdAt_idx" ON "ActivityEvent"("organizationId","createdAt");

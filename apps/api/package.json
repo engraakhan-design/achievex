@@ -1,0 +1,47 @@
+{
+  "name": "@achievex/api",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.27",
+    "@nestjs/config": "latest",
+    "@nestjs/core": "^11.1.27",
+    "@nestjs/platform-express": "^11.1.27",
+    "@nestjs/swagger": "latest",
+    "@prisma/client": "6.16.3",
+    "class-transformer": "latest",
+    "class-validator": "latest",
+    "helmet": "latest",
+    "reflect-metadata": "latest",
+    "rxjs": "latest",
+    "@nestjs/jwt": "latest",
+    "@nestjs/passport": "latest",
+    "bcryptjs": "latest",
+    "passport": "latest",
+    "passport-jwt": "latest",
+    "@nestjs/websockets": "^11.1.27",
+    "@nestjs/platform-socket.io": "^11.1.27",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.1.27",
+    "@types/express": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "jest": "latest",
+    "ts-jest": "latest",
+    "ts-node": "latest",
+    "typescript": "5.9.3",
+    "@types/passport-jwt": "latest"
+  }
+}

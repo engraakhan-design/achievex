@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { KnowledgePlatformModule } from '../knowledge-platform/knowledge-platform.module'; import { DocumentAuthoringController } from './document-authoring.controller'; import { DocumentAuthoringService } from './document-authoring.service';
+@Module({imports:[KnowledgePlatformModule],controllers:[DocumentAuthoringController],providers:[DocumentAuthoringService],exports:[DocumentAuthoringService]}) export class DocumentAuthoringModule{}

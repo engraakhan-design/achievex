@@ -1,0 +1,14 @@
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateConversationDto, CreateMessageDto, CreateReactionDto } from './dto';
+@Injectable()
+export class CollaborationService {
+ constructor(private readonly prisma: PrismaService) {}
+ async list(organizationId:string,userId:string){ return this.prisma.conversation.findMany({where:{organizationId,participants:{some:{userId}}},include:{participants:true,_count:{select:{messages:true}}},orderBy:{updatedAt:'desc'}}); }
+ async create(organizationId:string,userId:string,dto:CreateConversationDto){ const ids=[...new Set([userId,...dto.participantUserIds])]; return this.prisma.conversation.create({data:{organizationId,title:dto.title,type:dto.type as never,linkedEntityType:dto.linkedEntityType,linkedEntityId:dto.linkedEntityId,createdByUserId:userId,participants:{create:ids.map(id=>({organizationId,userId:id,role:(id===userId?'OWNER':'MEMBER') as never}))}},include:{participants:true}}); }
+ private async assertMember(organizationId:string,userId:string,conversationId:string){const membership=await this.prisma.conversationParticipant.findFirst({where:{organizationId,userId,conversationId}});if(!membership)throw new ForbiddenException('Conversation access denied');return membership;}
+ async messages(organizationId:string,userId:string,conversationId:string){await this.assertMember(organizationId,userId,conversationId);return this.prisma.conversationMessage.findMany({where:{organizationId,conversationId,deletedAt:null},include:{reactions:true,receipts:true},orderBy:{createdAt:'asc'}});}
+ async postMessage(organizationId:string,userId:string,conversationId:string,dto:CreateMessageDto){await this.assertMember(organizationId,userId,conversationId);const message=await this.prisma.conversationMessage.create({data:{organizationId,conversationId,authorUserId:userId,content:dto.content,parentMessageId:dto.parentMessageId}});await this.prisma.activityEvent.create({data:{organizationId,actorUserId:userId,type:'CONVERSATION_MESSAGE_CREATED',entityType:'Conversation',entityId:conversationId,payload:{messageId:message.id}}});return message;}
+ async react(organizationId:string,userId:string,dto:CreateReactionDto){const message=await this.prisma.conversationMessage.findFirst({where:{id:dto.messageId,organizationId}});if(!message)throw new NotFoundException('Message not found');await this.assertMember(organizationId,userId,message.conversationId);return this.prisma.messageReaction.upsert({where:{messageId_userId_type:{messageId:dto.messageId,userId,type:dto.type as never}},create:{organizationId,messageId:dto.messageId,userId,type:dto.type as never},update:{}});}
+ async feed(organizationId:string,userId:string){return this.prisma.activityEvent.findMany({where:{organizationId,OR:[{audienceUserIds:{has:userId}},{audienceUserIds:{isEmpty:true}}]},orderBy:{createdAt:'desc'},take:100});}
+}

@@ -1,0 +1,1 @@
+import { Module } from '@nestjs/common'; import { IdentityGovernanceController } from './identity-governance.controller'; import { IdentityGovernanceService } from './identity-governance.service'; @Module({controllers:[IdentityGovernanceController],providers:[IdentityGovernanceService],exports:[IdentityGovernanceService]}) export class IdentityGovernanceModule {}

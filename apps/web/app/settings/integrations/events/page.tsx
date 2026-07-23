@@ -1,0 +1,2 @@
+import { AdminShell } from '../../../../components/admin-shell';
+export default function Page(){return <AdminShell title="Enterprise event monitor" subtitle="Inspect standardized event envelopes and integration execution health."><section className="card"><h2>Event envelope</h2><p>Every event carries an event ID, type, tenant, source, occurrence time, payload and metadata for traceable integration processing.</p></section></AdminShell>}

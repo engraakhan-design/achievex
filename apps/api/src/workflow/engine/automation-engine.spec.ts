@@ -1,0 +1,2 @@
+import { planActions, shouldExecute, validateAutomation } from './automation-engine';
+describe('automation engine',()=>{it('evaluates nested conditions',()=>expect(shouldExecute({all:[{field:'project.health',operator:'eq',value:'OFF_TRACK'}]},{project:{health:'OFF_TRACK'}})).toBe(true));it('rejects unsafe actions',()=>expect(()=>validateAutomation(undefined,[{type:'RUN_SCRIPT',config:{}}])).toThrow());it('creates dry-run plans',()=>expect(planActions([{type:'EMIT_EVENT',config:{}}],true)[0].status).toBe('WOULD_EXECUTE'));});

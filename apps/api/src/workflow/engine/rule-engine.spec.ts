@@ -1,0 +1,2 @@
+import { evaluateGroup, validateRuleGroup } from './rule-engine';
+describe('rule engine',()=>{it('evaluates nested groups',()=>expect(evaluateGroup({all:[{field:'project.health',operator:'eq',value:'OFF_TRACK'},{field:'budget.variance',operator:'gt',value:10}]},{project:{health:'OFF_TRACK'},budget:{variance:15}})).toBe(true));it('supports any/not',()=>expect(evaluateGroup({not:{any:[{field:'risk',operator:'eq',value:'LOW'}]}},{risk:'HIGH'})).toBe(true));it('rejects ambiguous groups',()=>expect(()=>validateRuleGroup({all:[],any:[]})).toThrow())});

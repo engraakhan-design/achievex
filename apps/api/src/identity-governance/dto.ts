@@ -1,0 +1,6 @@
+import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+export class CreateCampaignDto { @IsString() name!:string; @IsEnum(['ORGANIZATION','DEPARTMENT','BUSINESS_UNIT','APPLICATION','ROLE','PRIVILEGED_ACCESS']) type!:string; @IsOptional() @IsString() scopeRef?:string; @IsString() dueAt!:string; @IsOptional() @IsArray() reviewerUserIds?:string[]; }
+export class DecisionDto { @IsEnum(['APPROVED','REVOKED','DELEGATED','JUSTIFICATION_REQUIRED','EXCEPTION']) decision!:string; @IsOptional() @IsString() justification?:string; @IsOptional() @IsString() delegatedToUserId?:string; }
+export class CreateSoDRuleDto { @IsString() name!:string; @IsString() category!:string; @IsString() leftEntitlement!:string; @IsString() rightEntitlement!:string; @IsEnum(['LOW','MEDIUM','HIGH','CRITICAL']) severity!:string; @IsOptional() @IsString() description?:string; }
+export class CreateAccessRequestDto { @IsString() entitlement!:string; @IsOptional() @IsString() application?:string; @IsOptional() @IsString() justification?:string; @IsOptional() @IsString() expiresAt?:string; }
+export class CreatePrivilegedAssignmentDto { @IsString() roleName!:string; @IsString() userId!:string; @IsString() startsAt!:string; @IsString() expiresAt!:string; @IsOptional() @IsBoolean() breakGlass?:boolean; @IsOptional() @IsString() justification?:string; }

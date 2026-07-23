@@ -1,0 +1,2 @@
+import { DecisionEngineService } from './decision-engine.service';
+describe('DecisionEngineService',()=>{const engine=new DecisionEngineService();it('projects deterministic deltas without side effects',()=>{expect(engine.simulate({cost:100,capacity:8},{cost:-10,capacity:2},.7)).toMatchObject({projectedOutcome:{cost:90,capacity:10},confidence:.7});});it('rejects confidence below policy minimum',()=>{expect(()=>engine.validateConfidence(.4,.6)).toThrow();});});

@@ -1,0 +1,2 @@
+import { AdminShell } from '../../../../components/admin-shell';
+export default function Page(){return <AdminShell title="Webhook management" subtitle="HMAC-signed delivery, retries, replay and dead-letter visibility."><section className="card"><h2>Delivery controls</h2><p>Outbound subscriptions retain tenant scope, event filters, delivery history, exponential retry state and replay capability.</p></section></AdminShell>}

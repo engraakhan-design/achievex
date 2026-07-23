@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common';import { EventsModule } from '../events/events.module';import { ResourceManagementController } from './resource-management.controller';import { ResourceManagementService } from './resource-management.service';
+@Module({imports:[EventsModule],controllers:[ResourceManagementController],providers:[ResourceManagementService],exports:[ResourceManagementService]}) export class ResourceManagementModule{}
